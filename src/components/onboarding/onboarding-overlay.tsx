@@ -74,7 +74,7 @@ export default function OnboardingOverlay({
   }, [step, currentStep.highlightClass]);
 
   return (
-    <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm">
+    <div className="fixed inset-0 z-[100] bg-black/60 backdrop-blur-sm">
       <div className="fixed top-20 left-1/2 transform -translate-x-1/2 w-80 max-w-[90vw]">
         <div className="bg-gray-900 border border-primary/40 rounded-2xl shadow-2xl">
           <div className="px-5 py-4 border-b border-gray-700">
