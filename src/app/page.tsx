@@ -1,31 +1,61 @@
 'use client';
 
-import { useState, useContext } from 'react';
+import { useState, useContext, useEffect, useRef } from 'react';
 import { AppContext } from '@/context/app-context';
 
 import Header from '@/components/layout/header';
 import BottomNav from '@/components/layout/bottom-nav';
 import IntelligenceTab from '@/components/tabs/intelligence/intelligence-tab';
 import DevicesTab from '@/components/tabs/devices/devices-tab';
-import CommunityTab from '@/components/tabs/community/community-tab';
-import ChallengesTab from '@/components/tabs/challenges/challenges-tab';
+import SocialTab from '@/components/tabs/social/social-tab';
 import ShopTab from '@/components/tabs/shop/shop-tab';
 import EnterpriseTab from '@/components/tabs/enterprise/enterprise-tab';
 
-export type Tab = 'home' | 'challenges' | 'friends' | 'shop' | 'devices' | 'enterprise';
+export type Tab =
+  | 'home'
+  | 'social'
+  | 'shop'
+  | 'devices'
+  | 'enterprise';
 
 export default function Home() {
-  const { user, accountType } = useContext(AppContext);
+  const { user, accountType, setAccountType } = useContext(AppContext);
   const [activeTab, setActiveTab] = useState<Tab>('home');
+  const [showProfileDropdown, setShowProfileDropdown] = useState(false);
+  const profileDropdownRef = useRef<HTMLDivElement>(null);
   
+  useEffect(() => {
+    // If switching to individual and currently on enterprise tab, redirect to home
+    if (accountType === 'individual' && activeTab === 'enterprise') {
+      setActiveTab('home');
+    }
+  }, [accountType, activeTab]);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        profileDropdownRef.current &&
+        !profileDropdownRef.current.contains(event.target as Node)
+      ) {
+        setShowProfileDropdown(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [profileDropdownRef]);
+
+
   const renderTabContent = () => {
     if (!user) {
       return (
         <div className="fixed inset-0 bg-gradient-to-br from-black via-gray-900 to-primary/20 flex items-center justify-center">
           <div className="text-center">
-            <img 
-              src="https://cdn.brandfetch.io/idZViZh4Xg/w/820/h/820/theme/dark/logo.png?c=1dxbfHSJFAPEGdCLU4o5B" 
-              alt="Noise" 
+            <img
+              src="https://cdn.brandfetch.io/idZViZh4Xg/w/820/h/820/theme/dark/logo.png?c=1dxbfHSJFAPEGdCLU4o5B"
+              alt="Noise"
               className="w-16 h-16 mx-auto mb-4 animate-pulse"
             />
             <h2 className="text-2xl font-bold text-white mb-2">NoiseFit</h2>
@@ -45,10 +75,8 @@ export default function Home() {
     switch (activeTab) {
       case 'home':
         return <IntelligenceTab />;
-      case 'challenges':
-        return <ChallengesTab />;
-      case 'friends':
-        return <CommunityTab />;
+      case 'social':
+        return <SocialTab />;
       case 'shop':
         return <ShopTab />;
       case 'devices':
@@ -62,11 +90,21 @@ export default function Home() {
 
   return (
     <div className="flex flex-col min-h-screen">
-      <Header />
+      <Header
+        showProfileDropdown={showProfileDropdown}
+        setShowProfileDropdown={setShowProfileDropdown}
+        profileDropdownRef={profileDropdownRef}
+      />
       <main className="flex-grow container mx-auto px-4 py-6 pb-24">
         {renderTabContent()}
       </main>
-      {user && <BottomNav activeTab={activeTab} setActiveTab={setActiveTab} />}
+      {user && (
+        <BottomNav
+          activeTab={activeTab}
+          setActiveTab={setActiveTab}
+          accountType={accountType}
+        />
+      )}
     </div>
   );
 }

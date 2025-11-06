@@ -43,9 +43,7 @@ export const AppContext = createContext<AppContextType>({
 
 export const AppContextProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User>(MOCK_DATA.user);
-  const [accountType, setAccountType] = useState<AccountType>(
-    MOCK_DATA.user.accountType
-  );
+  const [accountType, setAccountType] = useState<AccountType>('individual');
   const [aiReport, setAiReport] = useState<IntelligenceReportOutput | null>(
     null
   );
