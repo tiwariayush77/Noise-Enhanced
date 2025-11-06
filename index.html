@@ -1,0 +1,2902 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NoiseFit Intelligence Presentation</title>
+
+<!-- External Resources -->
+<link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet"/>
+<link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<style>
+/* ===== NAVIGATION SYSTEM STYLES ===== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background: #000;
+    overflow: hidden;
+    height: 100vh;
+}
+
+.presentation-wrapper {
+    width: 100%;
+    height: 100vh;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.slides-container {
+    position: relative;
+    width: 1280px;
+    height: 720px;
+    overflow: hidden;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+}
+
+.slide {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.5s ease, visibility 0.5s ease;
+}
+
+.slide.active {
+    opacity: 1;
+    visibility: visible;
+    z-index: 1;
+}
+
+/* Navigation Controls - RIGHT BOTTOM CORNER */
+.nav-controls {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    background: rgba(0, 0, 0, 0.9);
+    padding: 15px 30px;
+    border-radius: 50px;
+    backdrop-filter: blur(10px);
+    z-index: 1000;
+    box-shadow: 0 4px 20px rgba(107, 76, 230, 0.4);
+    border: 1px solid rgba(107, 76, 230, 0.3);
+}
+
+.nav-btn {
+    background: linear-gradient(135deg, #6B4CE6, #8B5CF6);
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 25px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.nav-btn:hover {
+    background: linear-gradient(135deg, #8B5CF6, #A855F7);
+    transform: scale(1.05);
+    box-shadow: 0 4px 15px rgba(107, 76, 230, 0.5);
+}
+
+.nav-btn:disabled {
+    background: #333;
+    color: #666;
+    cursor: not-allowed;
+    transform: scale(1);
+}
+
+.slide-counter {
+    color: #fff;
+    font-size: 16px;
+    font-weight: 600;
+    min-width: 80px;
+    text-align: center;
+}
+
+.keyboard-hint {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: rgba(0, 0, 0, 0.9);
+    color: #fff;
+    padding: 10px 15px;
+    border-radius: 8px;
+    font-size: 12px;
+    z-index: 1000;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(107, 76, 230, 0.3);
+}
+
+/* ===== ORIGINAL SLIDE STYLES (PRESERVED) ===== */
+
+/* === Styles from Slide 1: NoiseFit Intelligence === */
+
+    body, html {
+        margin: 0;
+        padding: 0;
+        font-family: 'Poppins', sans-serif;
+    }
+    
+    .slide-container {
+        width: 1280px;
+        min-height: 720px;
+        /* FIXED: Clean gradient background without blur overlay */
+        background: linear-gradient(135deg, #020617 0%, #0f172a 40%, #1e293b 70%, #6B4CE6 100%);
+        color: #f1f5f9;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+        position: relative;
+    }
+    
+    .purple-text {
+        color: #6B4CE6;
+    }
+    
+    /* FIXED: Proper CSS gradient for title instead of placeholder image */
+    .title-gradient {
+        background: linear-gradient(135deg, #6B4CE6, #8B5CF6, #A855F7);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        font-weight: 800;
+        text-shadow: none;
+    }
+    
+    .link-box {
+        background: rgba(107, 76, 230, 0.15);
+        border: 2px solid #6B4CE6;
+        border-radius: 12px;
+        padding: 12px 20px;
+        transition: all 0.3s ease;
+        backdrop-filter: blur(5px);
+    }
+    
+    .link-box:hover {
+        background-color: rgba(107, 76, 230, 0.25);
+        transform: translateY(-2px);
+        box-shadow: 0 6px 16px rgba(107, 76, 230, 0.3);
+    }
+    
+    /* REMOVED: Bottom blur causing grey overlay - no longer needed */
+    
+    .content {
+        z-index: 10;
+        position: relative;
+    }
+    
+    .purple-dot {
+        width: 12px;
+        height: 12px;
+        background-color: #6B4CE6;
+        border-radius: 50%;
+        display: inline-block;
+        margin-right: 8px;
+        box-shadow: 0 0 8px rgba(107, 76, 230, 0.6);
+    }
+    
+    /* ADDED: Better visibility for author section */
+    .author-box {
+        background: rgba(30, 41, 59, 0.7);
+        border: 1px solid rgba(107, 76, 230, 0.4);
+        border-radius: 12px;
+        padding: 1rem 2rem;
+        backdrop-filter: blur(10px);
+    }
+
+
+/* === Styles from Slide 2: Challenge &amp; Opportunity === */
+
+        body, html {
+            margin: 0;
+            padding: 0;
+            font-family: 'Poppins', sans-serif;
+        }
+        .slide-container {
+            width: 1280px;
+            min-height: 720px;
+            background-color: #0f172a;
+            color: #f1f5f9;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            position: relative;
+        }
+        .content {
+            z-index: 10;
+            position: relative;
+            flex: 1;
+        }
+        .purple-text {
+            color: #6B4CE6;
+        }
+        .loss-text {
+            color: #ef4444;
+        }
+        .gain-text {
+            color: #22c55e;
+        }
+        .quote-bubble {
+            border-radius: 16px;
+            padding: 12px 16px;
+            position: relative;
+            max-width: 80%;
+            margin: 0 auto;
+        }
+        .quote-bubble::after {
+            content: "";
+            position: absolute;
+            bottom: -10px;
+            left: 20px;
+            border-width: 10px 10px 0;
+            border-style: solid;
+            transform: rotate(0deg);
+        }
+        .loss-bubble {
+            background-color: rgba(239, 68, 68, 0.2);
+            border: 1px solid #ef4444;
+        }
+        .loss-bubble::after {
+            border-color: #ef4444 transparent transparent;
+        }
+        .gain-bubble {
+            background-color: rgba(34, 197, 94, 0.2);
+            border: 1px solid #22c55e;
+        }
+        .gain-bubble::after {
+            border-color: #22c55e transparent transparent;
+        }
+        .mockup-box {
+            border-radius: 12px;
+            padding: 16px;
+            background-color: #1e293b;
+            border: 1px solid #334155;
+        }
+        .chart-container {
+            width: 100%;
+            height: 60px;
+            position: relative;
+        }
+        .arrow-container {
+            position: relative;
+        }
+        .arrow-line {
+            height: 2px;
+            width: 80px;
+            background-color: #6B4CE6;
+            position: relative;
+        }
+        .arrow-head {
+            position: absolute;
+            right: -12px;
+            top: -9px;
+            border-style: solid;
+            border-width: 10px 0 10px 16px;
+            border-color: transparent transparent transparent #6B4CE6;
+        }
+        .arrow-label {
+            position: absolute;
+            top: -32px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #6B4CE6;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 16px;
+            white-space: nowrap;
+            font-weight: 600;
+            font-size: 14px;
+        }
+    
+
+/* === Styles from Slide 3: User Experience Transformation === */
+
+        body, html {
+            margin: 0;
+            padding: 0;
+            font-family: 'Poppins', sans-serif;
+        }
+        .slide-container {
+            width: 1280px;
+            min-height: 720px;
+            background-color: #0f172a;
+            color: #f1f5f9;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            position: relative;
+        }
+        .content {
+            z-index: 10;
+            position: relative;
+            flex: 1;
+        }
+        .purple-text {
+            color: #6B4CE6;
+        }
+        .phone-frame {
+            width: 280px;
+            height: 560px;
+            background-color: #1e1e1e;
+            border-radius: 40px;
+            padding: 20px;
+            position: relative;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.4);
+            overflow: hidden;
+        }
+        .phone-notch {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 6px;
+            background-color: #0f172a;
+            border-radius: 0 0 10px 10px;
+        }
+        .phone-screen {
+            width: 100%;
+            height: 100%;
+            background: #0f172a;
+            border-radius: 20px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+        .phone-header {
+            padding: 12px;
+            border-bottom: 1px solid #334155;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .phone-content {
+            flex: 1;
+            padding: 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            overflow-y: auto;
+        }
+        .card {
+            background-color: #1e293b;
+            border-radius: 12px;
+            padding: 16px;
+            border: 1px solid #334155;
+        }
+        .purple-card {
+            background-color: rgba(107, 76, 230, 0.1);
+            border: 1px solid #6B4CE6;
+        }
+        .blue-card {
+            background-color: rgba(56, 189, 248, 0.1);
+            border: 1px solid #38bdf8;
+        }
+        .quote-bubble {
+            border-radius: 16px;
+            padding: 12px 16px;
+            position: relative;
+            margin: 0 auto;
+            width: 90%;
+            text-align: center;
+        }
+        .before-bubble {
+            background-color: rgba(239, 68, 68, 0.2);
+            border: 1px solid #ef4444;
+        }
+        .after-bubble {
+            background-color: rgba(34, 197, 94, 0.2);
+            border: 1px solid #22c55e;
+        }
+        .arrow-container {
+            position: relative;
+        }
+        .arrow-line {
+            height: 2px;
+            width: 80px;
+            background-color: #6B4CE6;
+            position: relative;
+        }
+        .arrow-head {
+            position: absolute;
+            right: -12px;
+            top: -9px;
+            border-style: solid;
+            border-width: 10px 0 10px 16px;
+            border-color: transparent transparent transparent #6B4CE6;
+        }
+        .arrow-label {
+            position: absolute;
+            top: -32px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #6B4CE6;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 16px;
+            white-space: nowrap;
+            font-weight: 600;
+            font-size: 14px;
+        }
+    
+
+/* === Styles from Slide 4: 4-Tier Intelligence Engine === */
+
+    body, html {
+        margin: 0;
+        padding: 0;
+        font-family: 'Poppins', sans-serif;
+    }
+    
+    .slide-container {
+        width: 1280px;
+        min-height: 720px;
+        background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+        color: #f1f5f9;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+        position: relative;
+    }
+    
+    .content {
+        z-index: 10;
+        position: relative;
+        flex: 1;
+    }
+    
+    .purple-text {
+        color: #6B4CE6;
+    }
+    
+    /* FIXED: Proper container for circles */
+    .intelligence-container {
+        position: relative;
+        width: 500px;
+        height: 400px;
+        margin: 0 auto;
+    }
+    
+    .circle {
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+        position: absolute;
+        background-color: #1e293b;
+    }
+    
+    /* FIXED: Central circle positioned properly */
+    .central-circle {
+        width: 140px;
+        height: 140px;
+        border: 3px solid #6B4CE6;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 10;
+        background: linear-gradient(135deg, #1e293b, #6B4CE6);
+    }
+    
+    /* FIXED: Contributor circles with better positioning */
+    .contributor-circle {
+        width: 130px;
+        height: 130px;
+        z-index: 5;
+    }
+    
+    .sleep-circle {
+        border: 3px solid #38bdf8;
+        top: 10px;
+        left: 30px;
+    }
+    
+    .heart-circle {
+        border: 3px solid #ef4444;
+        top: 10px;
+        right: 30px;
+    }
+    
+    .activity-circle {
+        border: 3px solid #22c55e;
+        bottom: 10px;
+        left: 30px;
+    }
+    
+    .stress-circle {
+        border: 3px solid #f59e0b;
+        bottom: 10px;
+        right: 30px;
+    }
+    
+    /* REMOVED: Connector lines - they were causing the distortion */
+    /* SVG will handle this better */
+    
+    .icon-circle {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 6px;
+        font-size: 14px;
+    }
+    
+    .sleep-bg { background-color: rgba(56, 189, 248, 0.2); }
+    .heart-bg { background-color: rgba(239, 68, 68, 0.2); }
+    .activity-bg { background-color: rgba(34, 197, 94, 0.2); }
+    .stress-bg { background-color: rgba(245, 158, 11, 0.2); }
+    .purple-bg { background-color: rgba(107, 76, 230, 0.2); }
+    
+    .sleep-text { color: #38bdf8; }
+    .heart-text { color: #ef4444; }
+    .activity-text { color: #22c55e; }
+    .stress-text { color: #f59e0b; }
+    
+    .output-box {
+        border-radius: 12px;
+        padding: 14px 18px;
+        background-color: rgba(30, 41, 59, 0.8);
+        border: 1px solid rgba(107, 76, 230, 0.3);
+        display: flex;
+        align-items: center;
+        transition: all 0.3s ease;
+    }
+    
+    .output-box:hover {
+        border-color: #6B4CE6;
+        background-color: rgba(107, 76, 230, 0.15);
+        transform: translateY(-2px);
+    }
+    
+    .feature-box {
+        border-radius: 10px;
+        padding: 14px;
+        background-color: rgba(107, 76, 230, 0.08);
+        border: 1px solid rgba(107, 76, 230, 0.3);
+        margin-bottom: 12px;
+        transition: all 0.3s ease;
+    }
+    
+    .feature-box:hover {
+        background-color: rgba(107, 76, 230, 0.15);
+        border-color: #6B4CE6;
+    }
+
+
+/* === Styles from Slide 5: Energy Intelligence Dashboard === */
+
+        body, html {
+            margin: 0;
+            padding: 0;
+            font-family: 'Poppins', sans-serif;
+        }
+        .slide-container {
+            width: 1280px;
+            min-height: 720px;
+            background-color: #0f172a;
+            color: #f1f5f9;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            position: relative;
+        }
+        .content {
+            z-index: 10;
+            position: relative;
+            flex: 1;
+        }
+        .purple-text {
+            color: #6B4CE6;
+        }
+        .phone-frame {
+            width: 280px;
+            height: 560px;
+            background-color: #1e293b;
+            border-radius: 40px;
+            position: relative;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.4);
+            overflow: hidden;
+            border: 8px solid #334155;
+        }
+        .phone-screen {
+            width: 100%;
+            height: 100%;
+            background-color: #0f172a;
+            display: flex;
+            flex-direction: column;
+            padding: 20px 16px;
+        }
+        .phone-notch {
+            width: 60px;
+            height: 6px;
+            background-color: #334155;
+            border-radius: 0 0 8px 8px;
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        .circle-progress {
+            width: 200px;
+            height: 200px;
+            position: relative;
+            margin: 30px auto;
+        }
+        .circle-bg {
+            fill: none;
+            stroke: #334155;
+            stroke-width: 12;
+        }
+        .circle-progress-value {
+            fill: none;
+            stroke: #6B4CE6;
+            stroke-width: 12;
+            stroke-dasharray: 472;
+            stroke-dashoffset: 80;
+            stroke-linecap: round;
+        }
+        .score-value {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+        }
+        .feature-box {
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 16px;
+            position: relative;
+            overflow: hidden;
+        }
+        .feature-box-ml {
+            border: 2px solid #6B4CE6;
+            background-color: rgba(107, 76, 230, 0.05);
+        }
+        .feature-box-performance {
+            border: 2px solid #22c55e;
+            background-color: rgba(34, 197, 94, 0.05);
+        }
+        .feature-box-confidence {
+            border: 2px solid #f59e0b;
+            background-color: rgba(245, 158, 11, 0.05);
+        }
+        .feature-box-impact {
+            border: 2px solid #64748b;
+            background-color: rgba(100, 116, 139, 0.05);
+        }
+        .insight-card {
+            background-color: rgba(107, 76, 230, 0.2);
+            border-radius: 12px;
+            padding: 12px;
+            margin-top: 20px;
+            border: 1px solid #6B4CE6;
+        }
+        .icon-box {
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 12px;
+        }
+        .icon-ml {
+            background-color: rgba(107, 76, 230, 0.1);
+            color: #6B4CE6;
+        }
+        .icon-performance {
+            background-color: rgba(34, 197, 94, 0.1);
+            color: #22c55e;
+        }
+        .icon-confidence {
+            background-color: rgba(245, 158, 11, 0.1);
+            color: #f59e0b;
+        }
+        .icon-impact {
+            background-color: rgba(100, 116, 139, 0.1);
+            color: #64748b;
+        }
+    
+
+/* === Styles from Slide 6: Personalized Contributors Analysis === */
+
+    body, html {
+        margin: 0;
+        padding: 0;
+        font-family: 'Poppins', sans-serif;
+    }
+    .slide-container {
+        width: 1280px;
+        min-height: 720px;
+        background-color: #0f172a;
+        color: #f1f5f9;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+        position: relative;
+    }
+    .content {
+        z-index: 10;
+        position: relative;
+        flex: 1;
+    }
+    .purple-text {
+        color: #6B4CE6;
+    }
+    .sleep-text {
+        color: #38bdf8;
+    }
+    .heart-text {
+        color: #ef4444;
+    }
+    .activity-text {
+        color: #22c55e;
+    }
+    .stress-text {
+        color: #f59e0b;
+    }
+    .phone-frame {
+        width: 280px;
+        height: 560px;
+        background-color: #1e293b;
+        border-radius: 36px;
+        border: 8px solid #2d3748;
+        overflow: hidden;
+        position: relative;
+        box-shadow: 0 25px 50px rgba(0,0,0,0.5);
+    }
+    .phone-notch {
+        width: 70px;
+        height: 20px;
+        background-color: #2d3748;
+        border-radius: 0 0 16px 16px;
+        position: absolute;
+        top: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 5;
+    }
+    .phone-content {
+        padding: 16px 12px;
+        height: 100%;
+        overflow-y: auto;
+        background-color: #0f172a;
+    }
+    .feature-box {
+        border-radius: 12px;
+        padding: 16px;
+        background-color: rgba(107, 76, 230, 0.05);
+        border: 1px solid #6B4CE6;
+        margin-bottom: 16px;
+        transition: all 0.3s ease;
+    }
+    .feature-box:hover {
+        background-color: rgba(107, 76, 230, 0.1);
+        transform: translateY(-2px);
+        box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+    }
+    .contributor-card {
+        border-radius: 12px;
+        padding: 12px;
+        margin-bottom: 12px;
+        display: flex;
+        align-items: center;
+        background-color: #1e293b;
+        transition: all 0.3s ease;
+    }
+    .contributor-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+    }
+    .icon-circle {
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 12px;
+        flex-shrink: 0;
+    }
+    .sleep-bg {
+        background-color: rgba(56, 189, 248, 0.2);
+    }
+    .heart-bg {
+        background-color: rgba(239, 68, 68, 0.2);
+    }
+    .activity-bg {
+        background-color: rgba(34, 197, 94, 0.2);
+    }
+    .stress-bg {
+        background-color: rgba(245, 158, 11, 0.2);
+    }
+    .progress-container {
+        height: 8px;
+        background-color: rgba(255, 255, 255, 0.1);
+        border-radius: 4px;
+        margin-top: 6px;
+    }
+    .progress-bar {
+        height: 100%;
+        border-radius: 4px;
+    }
+    .sleep-bar {
+        background-color: #38bdf8;
+        width: 85%;
+    }
+    .heart-bar {
+        background-color: #ef4444;
+        width: 95%;
+    }
+    .activity-bar {
+        background-color: #22c55e;
+        width: 75%;
+    }
+    .stress-bar {
+        background-color: #f59e0b;
+        width: 65%;
+    }
+    .formula-card {
+        border-radius: 12px;
+        padding: 12px;
+        background-color: #1e293b;
+        border: 1px solid #334155;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-top: 16px;
+    }
+
+
+/* === Styles from Slide 7: Smart Opportunities Engine === */
+
+        body, html {
+            margin: 0;
+            padding: 0;
+            font-family: 'Poppins', sans-serif;
+        }
+        .slide-container {
+            width: 1280px;
+            min-height: 720px;
+            background-color: #0f172a;
+            color: #f1f5f9;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            position: relative;
+        }
+        .content {
+            z-index: 10;
+            position: relative;
+            flex: 1;
+        }
+        .purple-text {
+            color: #6B4CE6;
+        }
+        .phone-frame {
+            width: 280px;
+            height: 560px;
+            border-radius: 40px;
+            background: linear-gradient(145deg, #1e1e1e, #333);
+            padding: 20px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.4);
+        }
+        .phone-notch {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 20px;
+            background-color: #0f172a;
+            border-bottom-left-radius: 10px;
+            border-bottom-right-radius: 10px;
+        }
+        .phone-screen {
+            background-color: #0f172a;
+            height: 100%;
+            border-radius: 24px;
+            overflow-y: auto;
+            padding: 20px 14px;
+            display: flex;
+            flex-direction: column;
+        }
+        .opportunity-card {
+            border-radius: 16px;
+            padding: 16px;
+            margin-bottom: 16px;
+            position: relative;
+            overflow: hidden;
+        }
+        .high-priority {
+            border: 1px solid #8B5CF6;
+            background-color: rgba(139, 92, 246, 0.1);
+        }
+        .medium-priority {
+            border: 1px solid #38bdf8;
+            background-color: rgba(56, 189, 248, 0.1);
+        }
+        .badge {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            font-size: 10px;
+            font-weight: bold;
+            padding: 4px 8px;
+            border-radius: 12px;
+        }
+        .high-badge {
+            background-color: rgba(139, 92, 246, 0.2);
+            color: #8B5CF6;
+        }
+        .medium-badge {
+            background-color: rgba(56, 189, 248, 0.2);
+            color: #38bdf8;
+        }
+        .success-rate {
+            color: #22c55e;
+            font-size: 12px;
+            margin-bottom: 12px;
+        }
+        .opp-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            margin-bottom: 12px;
+        }
+        .high-icon {
+            background-color: rgba(139, 92, 246, 0.2);
+        }
+        .medium-icon {
+            background-color: rgba(56, 189, 248, 0.2);
+        }
+        .opp-button {
+            margin-top: 12px;
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 12px;
+            display: inline-block;
+        }
+        .high-button {
+            background-color: rgba(139, 92, 246, 0.2);
+            color: #8B5CF6;
+            border: 1px solid #8B5CF6;
+        }
+        .medium-button {
+            background-color: rgba(56, 189, 248, 0.2);
+            color: #38bdf8;
+            border: 1px solid #38bdf8;
+        }
+        .feature-box {
+            border-radius: 12px;
+            padding: 16px;
+            background-color: rgba(107, 76, 230, 0.05);
+            border: 1px solid #6B4CE6;
+            margin-bottom: 16px;
+        }
+        .feature-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: rgba(107, 76, 230, 0.1);
+            margin-right: 12px;
+        }
+    
+
+/* === Styles from Slide 8: Optimal Day Timeline === */
+
+        body, html {
+            margin: 0;
+            padding: 0;
+            font-family: 'Poppins', sans-serif;
+        }
+        .slide-container {
+            width: 1280px;
+            min-height: 720px;
+            background-color: #0f172a;
+            color: #f1f5f9;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            position: relative;
+        }
+        .content {
+            z-index: 10;
+            position: relative;
+            flex: 1;
+        }
+        .purple-text {
+            color: #6B4CE6;
+        }
+        .phone-frame {
+            width: 280px;
+            height: 560px;
+            background-color: #1e293b;
+            border-radius: 40px;
+            border: 8px solid #334155;
+            overflow: hidden;
+            position: relative;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.4);
+        }
+        .phone-notch {
+            width: 60px;
+            height: 6px;
+            background-color: #0f172a;
+            border-radius: 0 0 8px 8px;
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        .phone-content {
+            height: 100%;
+            overflow-y: auto;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+        }
+        .timeline-card {
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 16px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            position: relative;
+        }
+        .timeline-card::before {
+            content: '';
+            position: absolute;
+            left: 20px;
+            top: -16px;
+            height: 16px;
+            width: 2px;
+            background-color: #6B4CE6;
+        }
+        .timeline-card:first-child::before {
+            display: none;
+        }
+        .green-card {
+            background-color: rgba(34, 197, 94, 0.1);
+            border: 1px solid #22c55e;
+        }
+        .purple-card {
+            background-color: rgba(107, 76, 230, 0.1);
+            border: 1px solid #6B4CE6;
+        }
+        .yellow-card {
+            background-color: rgba(245, 158, 11, 0.1);
+            border: 1px solid #f59e0b;
+        }
+        .blue-card {
+            background-color: rgba(56, 189, 248, 0.1);
+            border: 1px solid #38bdf8;
+        }
+        .time-label {
+            font-weight: 600;
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 8px;
+            margin-bottom: 8px;
+        }
+        .green-time {
+            background-color: rgba(34, 197, 94, 0.2);
+            color: #22c55e;
+        }
+        .purple-time {
+            background-color: rgba(107, 76, 230, 0.2);
+            color: #8B5CF6;
+        }
+        .yellow-time {
+            background-color: rgba(245, 158, 11, 0.2);
+            color: #f59e0b;
+        }
+        .blue-time {
+            background-color: rgba(56, 189, 248, 0.2);
+            color: #38bdf8;
+        }
+        .feature-box {
+            border-radius: 12px;
+            padding: 16px;
+            background-color: rgba(107, 76, 230, 0.05);
+            border: 1px solid #6B4CE6;
+            margin-bottom: 16px;
+            transition: all 0.3s ease;
+        }
+        .feature-box:hover {
+            background-color: rgba(107, 76, 230, 0.1);
+            transform: translateY(-2px);
+        }
+    
+
+/* === Styles from Slide 9: Enterprise Intelligence Platform === */
+
+        body, html {
+            margin: 0;
+            padding: 0;
+            font-family: 'Poppins', sans-serif;
+        }
+        .slide-container {
+            width: 1280px;
+            min-height: 720px;
+            background-color: #0f172a;
+            color: #f1f5f9;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            position: relative;
+        }
+        .content {
+            z-index: 10;
+            position: relative;
+            flex: 1;
+        }
+        .purple-text {
+            color: #6B4CE6;
+        }
+        .yellow-text {
+            color: #f59e0b;
+        }
+        .phone-frame {
+            width: 280px;
+            height: 560px;
+            background-color: #1e293b;
+            border-radius: 40px;
+            padding: 20px;
+            position: relative;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.4);
+            overflow: hidden;
+        }
+        .phone-notch {
+            width: 60px;
+            height: 18px;
+            background-color: #0f172a;
+            border-radius: 0 0 12px 12px;
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        .progress-circle {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            position: relative;
+        }
+        .progress-circle::before {
+            content: '';
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            position: absolute;
+            border: 8px solid #334155;
+            box-sizing: border-box;
+        }
+        .progress-circle::after {
+            content: '';
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            position: absolute;
+            border: 8px solid transparent;
+            border-top: 8px solid #6B4CE6;
+            border-right: 8px solid #6B4CE6;
+            border-bottom: 8px solid #6B4CE6;
+            box-sizing: border-box;
+            transform: rotate(70deg);
+        }
+        .progress-bar {
+            height: 12px;
+            border-radius: 6px;
+            background-color: #334155;
+            overflow: hidden;
+            margin: 8px 0;
+        }
+        .progress-bar-fill-78 {
+            height: 100%;
+            background-color: #6B4CE6;
+            width: 78%;
+        }
+        .progress-bar-fill-65 {
+            height: 100%;
+            background-color: #6B4CE6;
+            width: 65%;
+        }
+        .enterprise-card {
+            background-color: #1e293b;
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 16px;
+            border: 1px solid #334155;
+        }
+        .opportunity-card {
+            background: linear-gradient(135deg, rgba(107, 76, 230, 0.2), rgba(139, 92, 246, 0.1));
+            border-radius: 12px;
+            padding: 16px;
+            margin-top: 16px;
+            border: 1px solid #6B4CE6;
+        }
+        .feature-box {
+            border-radius: 12px;
+            padding: 16px;
+            background-color: rgba(107, 76, 230, 0.05);
+            border: 1px solid #6B4CE6;
+            margin-bottom: 16px;
+            transition: all 0.3s ease;
+        }
+        .feature-box:hover {
+            background-color: rgba(107, 76, 230, 0.1);
+            transform: translateY(-2px);
+        }
+        .badge {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-size: 10px;
+            font-weight: 600;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+        }
+        .badge-purple {
+            background-color: rgba(107, 76, 230, 0.2);
+            color: #6B4CE6;
+        }
+        .button {
+            display: inline-block;
+            padding: 8px 16px;
+            border-radius: 8px;
+            background-color: #6B4CE6;
+            color: white;
+            font-weight: 500;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .button:hover {
+            background-color: #8B5CF6;
+        }
+    
+
+/* === Styles from Slide 10: Business Impact &amp; Skills === */
+
+        body, html {
+            margin: 0;
+            padding: 0;
+            font-family: 'Poppins', sans-serif;
+        }
+        .slide-container {
+            width: 1280px;
+            min-height: 720px;
+            background-color: #0f172a;
+            color: #f1f5f9;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            position: relative;
+        }
+        .content {
+            z-index: 10;
+            position: relative;
+            flex: 1;
+        }
+        .purple-text {
+            color: #6B4CE6;
+        }
+        .progress-bar {
+            height: 12px;
+            border-radius: 6px;
+            position: relative;
+            overflow: hidden;
+        }
+        .progress-bg {
+            position: absolute;
+            height: 100%;
+            left: 0;
+            top: 0;
+            border-radius: 6px;
+        }
+        .progress-label {
+            position: absolute;
+            right: 5px;
+            top: -22px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+        .skill-level {
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            font-weight: 700;
+        }
+        .arrow-transition {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 48px;
+            color: #6B4CE6;
+        }
+        .achievement-badge {
+            border-radius: 12px;
+            padding: 12px 24px;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            margin-right: 16px;
+            background-color: rgba(107, 76, 230, 0.1);
+            border: 1px solid #6B4CE6;
+        }
+        .revenue-bar {
+            position: relative;
+            padding: 24px;
+            border-radius: 16px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 280px;
+        }
+        .loss-bar {
+            background-color: rgba(239, 68, 68, 0.1);
+            border: 2px solid #ef4444;
+        }
+        .revenue-bar {
+            background-color: rgba(34, 197, 94, 0.1);
+            border: 2px solid #22c55e;
+        }
+    
+
+/* === Styles from Slide 11: Thank You & Live Demo === */
+
+    body, html {
+        margin: 0;
+        padding: 0;
+        font-family: 'Poppins', sans-serif;
+    }
+    
+    .slide-container {
+        width: 1280px;
+        min-height: 720px;
+        /* FIXED: Clean gradient background */
+        background: linear-gradient(135deg, #020617 0%, #0f172a 40%, #1e293b 70%, #6B4CE6 100%);
+        color: #f1f5f9;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+        position: relative;
+    }
+    
+    .purple-text {
+        color: #6B4CE6;
+    }
+    
+    /* FIXED: Proper CSS gradient for title */
+    .title-gradient {
+        background: linear-gradient(135deg, #ffffff, #f1f5f9, #cbd5e1);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        font-weight: 800;
+        text-shadow: none;
+    }
+    
+    .link-box {
+        background: rgba(107, 76, 230, 0.15);
+        border: 2px solid #6B4CE6;
+        border-radius: 16px;
+        padding: 16px 24px;
+        transition: all 0.3s ease;
+        backdrop-filter: blur(5px);
+        min-width: 400px;
+    }
+    
+    .link-box:hover {
+        background-color: rgba(107, 76, 230, 0.25);
+        transform: translateY(-3px);
+        box-shadow: 0 8px 20px rgba(107, 76, 230, 0.4);
+    }
+    
+    .demo-link-green {
+        background: rgba(34, 197, 94, 0.15);
+        border: 2px solid #22c55e;
+    }
+    
+    .demo-link-green:hover {
+        background-color: rgba(34, 197, 94, 0.25);
+        box-shadow: 0 8px 20px rgba(34, 197, 94, 0.4);
+    }
+    
+    /* REMOVED: Bottom blur - no longer needed */
+    
+    .content {
+        z-index: 10;
+        position: relative;
+    }
+    
+    .purple-dot {
+        width: 12px;
+        height: 12px;
+        background-color: #6B4CE6;
+        border-radius: 50%;
+        display: inline-block;
+        margin-right: 8px;
+        box-shadow: 0 0 10px rgba(107, 76, 230, 0.6);
+    }
+    
+    .highlight-box {
+        background: rgba(30, 41, 59, 0.7);
+        border: 1px solid rgba(107, 76, 230, 0.4);
+        border-radius: 12px;
+        padding: 12px 20px;
+        display: inline-flex;
+        align-items: center;
+        margin: 0 8px;
+        backdrop-filter: blur(10px);
+        transition: all 0.3s ease;
+    }
+    
+    .highlight-box:hover {
+        background: rgba(30, 41, 59, 0.9);
+        border-color: #6B4CE6;
+        transform: translateY(-2px);
+    }
+    
+    .logo-glow {
+        filter: brightness(1.3) drop-shadow(0 8px 20px rgba(107, 76, 230, 0.5));
+    }
+    
+    /* Contact section styling */
+    .contact-box {
+        background: rgba(30, 41, 59, 0.7);
+        border: 1px solid rgba(107, 76, 230, 0.4);
+        border-radius: 16px;
+        padding: 1.5rem;
+        backdrop-filter: blur(10px);
+    }
+
+
+</style>
+</head>
+<body>
+<div class="presentation-wrapper">
+    <div class="keyboard-hint">Use ← → arrow keys to navigate</div>
+
+    <div class="slides-container">
+
+        <!-- Slide 1: NoiseFit Intelligence -->
+        <div class="slide active" data-slide="1">
+
+<div class="slide-container">
+    <div class="content flex flex-col items-center justify-between py-12 px-16 h-full">
+        <!-- Logo -->
+        <div class="w-full flex justify-center mb-4">
+            <img alt="Noise Logo" class="h-16" src="https://www.gonoise.com/cdn/shop/files/Artboard_1_wf_1.png?v=1761318524" style="filter: brightness(1.2) drop-shadow(0 4px 12px rgba(107, 76, 230, 0.4));"/>
+        </div>
+        
+        <!-- Main Content -->
+        <div class="flex-1 flex flex-col items-center justify-center text-center mt-6 mb-12">
+            <h1 class="title-gradient text-6xl mb-4" style="line-height: 1.2;">NoiseFit Intelligence</h1>
+            <p class="text-xl max-w-3xl mb-12" style="color: #cbd5e1; text-shadow: 0 2px 4px rgba(0,0,0,0.3);">AI-powered health intelligence for actionable performance</p>
+            
+            <!-- Divider -->
+            <div style="width: 200px; height: 2px; background: linear-gradient(90deg, transparent, #6B4CE6, transparent); margin-bottom: 2rem;"></div>
+            
+            <!-- Author Info - Moved up for better visibility -->
+            <div class="author-box mb-8">
+                <p class="font-semibold mb-1" style="color: #f1f5f9; font-size: 1.125rem;">Ayush Tiwari</p>
+                <p class="text-sm" style="color: #94a3b8;">Product Manager Portfolio • November 2024</p>
+            </div>
+            
+            <!-- Prototype Links -->
+            <div class="flex space-x-6 mt-4">
+                <a class="link-box flex items-center" href="https://noise-enhanced.vercel.app/" target="_blank" style="min-width: 240px;">
+                    <i class="fas fa-fire-alt mr-3 purple-text" style="font-size: 1.25rem;"></i>
+                    <div class="text-left">
+                        <p class="font-semibold" style="color: #f1f5f9; font-size: 0.875rem;">🚀 Live Demo</p>
+                        <p class="text-sm" style="color: #6B4CE6; font-size: 0.75rem;">noise-enhanced.vercel.app</p>
+                    </div>
+                </a>
+               
+            </div>
+        </div>
+        
+        <!-- Bottom spacing -->
+        <div style="height: 1.5rem;"></div>
+    </div>
+</div>
+
+        </div>
+
+        <!-- Slide 2: Challenge &amp; Opportunity -->
+        <div class="slide" data-slide="2">
+
+<div class="slide-container">
+<div class="content flex flex-col h-full px-12 py-8">
+<!-- Header with Logo -->
+<div class="flex justify-between items-center mb-6">
+<h2 class="text-2xl font-bold purple-text">Challenge &amp; Opportunity</h2>
+<img alt="Noise Logo" class="h-10" src="https://page.gensparksite.com/slides_images/0d63dbcc821ba005b6eb246bc9e3b42c.png"/>
+</div>
+<!-- Main Content: Side by Side Comparison -->
+<div class="flex flex-1 gap-8 items-center">
+<!-- Left Panel - Current Challenge -->
+<div class="flex-1 flex flex-col items-center">
+<h3 class="text-xl mb-4 text-gray-300">Current Challenge</h3>
+<!-- Loss Metric -->
+<div class="text-center mb-6">
+<p class="text-sm text-gray-400">Revenue Impact</p>
+<p class="text-5xl font-bold loss-text mb-1">₹20 Cr</p>
+<p class="text-lg loss-text">LOSS</p>
+</div>
+<!-- Basic App Mockup -->
+<div class="mockup-box w-full mb-6">
+<div class="flex items-center justify-between mb-3">
+<p class="text-gray-400 text-sm">Today's Metrics</p>
+<i class="fas fa-ellipsis-h text-gray-400"></i>
+</div>
+<div class="flex flex-col gap-3">
+<div class="flex justify-between">
+<p class="text-gray-300"><i class="fas fa-shoe-prints mr-2 text-gray-400"></i> Steps</p>
+<p class="font-semibold">8,547</p>
+</div>
+<div class="flex justify-between">
+<p class="text-gray-300"><i class="fas fa-heartbeat mr-2 text-gray-400"></i> Heart Rate</p>
+<p class="font-semibold">72 BPM</p>
+</div>
+<div class="flex justify-between">
+<p class="text-gray-300"><i class="fas fa-moon mr-2 text-gray-400"></i> Sleep</p>
+<p class="font-semibold">7h 22m</p>
+</div>
+</div>
+</div>
+<!-- User Quote -->
+<div class="quote-bubble loss-bubble mb-6">
+<p class="text-center">"What does this data mean?"</p>
+</div>
+<!-- Declining Chart -->
+<div class="chart-container">
+<canvas id="declineChart"></canvas>
+</div>
+</div>
+<!-- Center Transformation Arrow -->
+<div class="arrow-container">
+<div class="arrow-line">
+<div class="arrow-head"></div>
+<div class="arrow-label"><i class="fas fa-brain mr-1"></i> AI Intelligence</div>
+</div>
+</div>
+<!-- Right Panel - Enhanced Vision -->
+<div class="flex-1 flex flex-col items-center">
+<h3 class="text-xl mb-4 text-gray-300">Enhanced Vision</h3>
+<!-- Revenue Metric -->
+<div class="text-center mb-6">
+<p class="text-sm text-gray-400">Revenue Impact</p>
+<p class="text-5xl font-bold gain-text mb-1">₹180 Cr</p>
+<p class="text-lg gain-text">REVENUE</p>
+</div>
+<!-- Intelligence App Mockup -->
+<div class="mockup-box w-full mb-6 border-purple-500">
+<div class="flex items-center justify-between mb-4">
+<div class="flex items-center">
+<i class="fas fa-bolt purple-text mr-2"></i>
+<p class="text-white font-medium">Intelligence</p>
+</div>
+<i class="fas fa-ellipsis-h text-gray-400"></i>
+</div>
+<div class="bg-gray-800 rounded-lg p-3 mb-3">
+<div class="flex justify-between items-center">
+<div>
+<p class="text-lg font-semibold">82/100</p>
+<p class="text-green-500 text-sm">EXCELLENT</p>
+</div>
+<div class="w-12 h-12 rounded-full border-4 border-purple-500 flex items-center justify-center">
+<p class="text-sm font-bold">82%</p>
+</div>
+</div>
+</div>
+<div class="flex justify-between items-center">
+<p class="text-gray-300"><i class="fas fa-bullseye text-purple-500 mr-2"></i> Perfect workout</p>
+<p class="font-semibold">6-8 AM</p>
+</div>
+</div>
+<!-- User Quote -->
+<div class="quote-bubble gain-bubble mb-6">
+<p class="text-center">"This is exactly what I needed!"</p>
+</div>
+<!-- Growth Chart -->
+<div class="chart-container">
+<canvas id="growthChart"></canvas>
+</div>
+</div>
+</div>
+</div>
+</div>
+<script>
+    // Chart initialization
+    document.addEventListener('DOMContentLoaded', function() {
+        // Decline Chart
+        const declineCtx = document.getElementById('declineChart').getContext('2d');
+        const declineChart = new Chart(declineCtx, {
+            type: 'line',
+            data: {
+                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+                datasets: [{
+                    label: 'Usage Trend',
+                    data: [80, 75, 70, 60, 55, 40],
+                    borderColor: '#ef4444',
+                    backgroundColor: 'rgba(239, 68, 68, 0.1)',
+                    borderWidth: 2,
+                    tension: 0.4,
+                    fill: true
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                    tooltip: {
+                        enabled: false
+                    }
+                },
+                scales: {
+                    x: {
+                        display: false
+                    },
+                    y: {
+                        display: false
+                    }
+                },
+                elements: {
+                    point: {
+                        radius: 0
+                    }
+                }
+            }
+        });
+        
+        // Growth Chart
+        const growthCtx = document.getElementById('growthChart').getContext('2d');
+        const growthChart = new Chart(growthCtx, {
+            type: 'line',
+            data: {
+                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+                datasets: [{
+                    label: 'Growth Trend',
+                    data: [30, 45, 60, 70, 80, 90],
+                    borderColor: '#22c55e',
+                    backgroundColor: 'rgba(34, 197, 94, 0.1)',
+                    borderWidth: 2,
+                    tension: 0.4,
+                    fill: true
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                    tooltip: {
+                        enabled: false
+                    }
+                },
+                scales: {
+                    x: {
+                        display: false
+                    },
+                    y: {
+                        display: false
+                    }
+                },
+                elements: {
+                    point: {
+                        radius: 0
+                    }
+                }
+            }
+        });
+    });
+</script>
+
+        </div>
+
+        <!-- Slide 3: User Experience Transformation -->
+        <div class="slide" data-slide="3">
+
+<div class="slide-container">
+<div class="content flex flex-col h-full px-12 py-8">
+<!-- Header with Logo -->
+<div class="flex justify-between items-center mb-6">
+<h2 class="text-2xl font-bold purple-text">User Experience Transformation</h2>
+<img alt="Noise Logo" class="h-10" src="https://page.gensparksite.com/slides_images/0d63dbcc821ba005b6eb246bc9e3b42c.png"/>
+</div>
+<!-- Main Content: Side by Side Comparison -->
+<div class="flex flex-1 gap-8 items-center">
+<!-- Left Panel - Current NoiseFit App -->
+<div class="flex-1 flex flex-col items-center">
+<h3 class="text-xl mb-4 text-gray-300">Current NoiseFit App</h3>
+<!-- Phone Mockup -->
+<div class="phone-frame mb-6">
+<div class="phone-notch"></div>
+<div class="phone-screen">
+<!-- Phone Header -->
+<div class="phone-header">
+<p class="font-medium">Basic Health Data</p>
+<i class="fas fa-ellipsis-h text-gray-400"></i>
+</div>
+<!-- Phone Content -->
+<div class="phone-content">
+<!-- Sleep Card -->
+<div class="card">
+<div class="flex items-center justify-between mb-2">
+<p class="text-gray-400">Sleep Duration</p>
+<i class="fas fa-moon text-gray-400"></i>
+</div>
+<p class="text-2xl font-semibold">7h 22m</p>
+<p class="text-sm text-gray-400">Last night</p>
+</div>
+<!-- Heart Rate Card -->
+<div class="card">
+<div class="flex items-center justify-between mb-2">
+<p class="text-gray-400">Heart Rate</p>
+<i class="fas fa-heartbeat text-gray-400"></i>
+</div>
+<p class="text-2xl font-semibold">72 BPM</p>
+<p class="text-sm text-gray-400">Current</p>
+</div>
+<!-- Steps Card -->
+<div class="card">
+<div class="flex items-center justify-between mb-2">
+<p class="text-gray-400">Steps</p>
+<i class="fas fa-shoe-prints text-gray-400"></i>
+</div>
+<p class="text-2xl font-semibold">8,547</p>
+<p class="text-sm text-gray-400">Today</p>
+</div>
+</div>
+</div>
+</div>
+<!-- User Quote -->
+<div class="quote-bubble before-bubble">
+<p>"I see my data, but what should I do?"</p>
+</div>
+</div>
+<!-- Center Transformation Arrow -->
+<div class="arrow-container">
+<div class="arrow-line">
+<div class="arrow-head"></div>
+<div class="arrow-label"><i class="fas fa-brain mr-1"></i> AI Intelligence</div>
+</div>
+</div>
+<!-- Right Panel - Enhanced Prototype -->
+<div class="flex-1 flex flex-col items-center">
+<h3 class="text-xl mb-4 text-gray-300">Enhanced Prototype</h3>
+<!-- Phone Mockup -->
+<div class="phone-frame mb-6">
+<div class="phone-notch"></div>
+<div class="phone-screen">
+<!-- Phone Header -->
+<div class="phone-header">
+<div class="flex items-center">
+<img alt="Noise Logo" class="h-6 mr-2" src="https://page.gensparksite.com/slides_images/0d63dbcc821ba005b6eb246bc9e3b42c.png"/>
+<p class="font-medium">Intelligence</p>
+</div>
+<i class="fas fa-ellipsis-h text-gray-400"></i>
+</div>
+<!-- Phone Content -->
+<div class="phone-content">
+<!-- Energy Score Card -->
+<div class="purple-card">
+<p class="text-sm mb-2">Your Energy Today</p>
+<div class="flex items-center justify-between">
+<div>
+<p class="text-3xl font-bold">82<span class="text-lg font-normal text-gray-400">/100</span></p>
+<p class="text-green-500 font-medium">EXCELLENT</p>
+</div>
+<div class="w-16 h-16 rounded-full border-4 border-purple-500 flex items-center justify-center">
+<p class="text-lg font-bold">82</p>
+</div>
+</div>
+</div>
+<!-- Contributors Card -->
+<div class="card">
+<p class="text-sm mb-3"><i class="fas fa-bolt text-purple-500 mr-1"></i> What's Powering Your Energy</p>
+<!-- Sleep Quality -->
+<div class="mb-3">
+<div class="flex justify-between items-center mb-1">
+<div class="flex items-center">
+<div class="w-6 h-6 rounded-full bg-blue-500 flex items-center justify-center mr-2">
+<i class="fas fa-moon text-xs"></i>
+</div>
+<p>Sleep Quality</p>
+</div>
+<p class="text-blue-500 font-semibold">+18</p>
+</div>
+<div class="h-2 w-full bg-gray-700 rounded-full">
+<div class="h-full bg-blue-500 rounded-full" style="width: 85%"></div>
+</div>
+<p class="text-xs text-gray-400 mt-1">7.4h - 85% quality</p>
+</div>
+</div>
+<!-- Smart Opportunity Card -->
+<div class="blue-card">
+<div class="flex justify-between items-center mb-3">
+<p class="text-sm"><i class="fas fa-bullseye text-blue-400 mr-1"></i> Smart Opportunity</p>
+<div class="bg-green-900 px-2 py-1 rounded text-xs text-green-400">
+<p><i class="fas fa-chart-line mr-1"></i> 89% success rate</p>
+</div>
+</div>
+<p class="font-semibold text-lg">Perfect workout: 6-8 AM</p>
+<p class="text-sm text-gray-400">Based on your sleep patterns</p>
+<button class="mt-3 bg-blue-500 text-white py-2 px-4 rounded-lg w-full text-center">
+<p>Set Reminder</p>
+</button>
+</div>
+</div>
+</div>
+</div>
+<!-- User Quote -->
+<div class="quote-bubble after-bubble">
+<p>"Perfect! Now I know exactly what to do."</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+        </div>
+
+        <!-- Slide 4: 4-Tier Intelligence Engine -->
+        <div class="slide" data-slide="4">
+
+<div class="slide-container">
+    <div class="content flex flex-col h-full px-12 py-8">
+        <!-- Header with Logo -->
+        <div class="flex justify-between items-center mb-6">
+            <h2 class="text-3xl font-bold purple-text">4-Tier Intelligence Engine</h2>
+            <img alt="Noise Logo" class="h-12" src="https://www.gonoise.com/cdn/shop/files/Artboard_1_wf_1.png?v=1761318524" style="filter: brightness(1.2);"/>
+        </div>
+        
+        <!-- Main Content -->
+        <div class="flex flex-1 gap-8">
+            <!-- Left Side: 4-Tier Intelligence Engine Visualization -->
+            <div class="flex-1 flex flex-col items-center justify-center">
+                <div class="intelligence-container">
+                    
+                    <!-- SVG Connector Lines -->
+                    <svg style="position: absolute; width: 100%; height: 100%; z-index: 1;" viewBox="0 0 500 400">
+                        <line x1="95" y1="75" x2="220" y2="190" stroke="#6B4CE6" stroke-width="2" opacity="0.4" stroke-dasharray="5,5"/>
+                        <line x1="405" y1="75" x2="280" y2="190" stroke="#6B4CE6" stroke-width="2" opacity="0.4" stroke-dasharray="5,5"/>
+                        <line x1="95" y1="325" x2="220" y2="210" stroke="#6B4CE6" stroke-width="2" opacity="0.4" stroke-dasharray="5,5"/>
+                        <line x1="405" y1="325" x2="280" y2="210" stroke="#6B4CE6" stroke-width="2" opacity="0.4" stroke-dasharray="5,5"/>
+                    </svg>
+                    
+                    <!-- Central Circle with Energy Score -->
+                    <div class="circle central-circle">
+                        <p class="text-3xl font-bold" style="color: white;">82</p>
+                        <p class="text-xs" style="color: #cbd5e1;">/100</p>
+                        <p class="text-xs font-bold" style="color: #22c55e; margin-top: 4px;">EXCELLENT</p>
+                    </div>
+                    
+                    <!-- Sleep Quality Circle -->
+                    <div class="circle contributor-circle sleep-circle">
+                        <div class="icon-circle sleep-bg">
+                            <i class="fas fa-moon sleep-text"></i>
+                        </div>
+                        <p class="font-semibold text-xs" style="color: white;">Sleep Quality</p>
+                        <p class="text-xs" style="color: #94a3b8;">7.4h - 85%</p>
+                        <p class="text-lg font-bold sleep-text">+18</p>
+                    </div>
+                    
+                    <!-- Heart Fitness Circle -->
+                    <div class="circle contributor-circle heart-circle">
+                        <div class="icon-circle heart-bg">
+                            <i class="fas fa-heartbeat heart-text"></i>
+                        </div>
+                        <p class="font-semibold text-xs" style="color: white;">Heart Fitness</p>
+                        <p class="text-xs" style="color: #94a3b8;">58 BPM</p>
+                        <p class="text-lg font-bold heart-text">+22</p>
+                    </div>
+                    
+                    <!-- Daily Activity Circle -->
+                    <div class="circle contributor-circle activity-circle">
+                        <div class="icon-circle activity-bg">
+                            <i class="fas fa-running activity-text"></i>
+                        </div>
+                        <p class="font-semibold text-xs" style="color: white;">Daily Activity</p>
+                        <p class="text-xs" style="color: #94a3b8;">8.5K steps</p>
+                        <p class="text-lg font-bold activity-text">+15</p>
+                    </div>
+                    
+                    <!-- Stress Control Circle -->
+                    <div class="circle contributor-circle stress-circle">
+                        <div class="icon-circle stress-bg">
+                            <i class="fas fa-brain stress-text"></i>
+                        </div>
+                        <p class="font-semibold text-xs" style="color: white;">Stress Control</p>
+                        <p class="text-xs" style="color: #94a3b8;">Level 35</p>
+                        <p class="text-lg font-bold stress-text">+12</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Right Side: Feature Details -->
+            <div class="flex-1 flex flex-col justify-center">
+                <h3 class="text-2xl font-bold mb-6" style="color: #f1f5f9;">Intelligence Framework</h3>
+                
+                <div class="feature-box">
+                    <p class="font-semibold mb-1" style="color: #f1f5f9;">
+                        <i class="fas fa-lightbulb mr-2 purple-text"></i> Smart Scoring
+                    </p>
+                    <p class="text-sm" style="color: #cbd5e1;">Unique algorithm weights each health contributor based on individual patterns and baseline performance</p>
+                </div>
+                
+                <div class="feature-box">
+                    <p class="font-semibold mb-1" style="color: #f1f5f9;">
+                        <i class="fas fa-chart-line mr-2 purple-text"></i> Personalized Analytics
+                    </p>
+                    <p class="text-sm" style="color: #cbd5e1;">Machine learning model calculates optimal contributions from each metric for your body</p>
+                </div>
+                
+                <div class="feature-box">
+                    <p class="font-semibold mb-1" style="color: #f1f5f9;">
+                        <i class="fas fa-user-plus mr-2 purple-text"></i> Adaptive Intelligence
+                    </p>
+                    <p class="text-sm" style="color: #cbd5e1;">System improves over time as it learns your unique response patterns</p>
+                </div>
+                
+                <div class="feature-box">
+                    <p class="font-semibold mb-1" style="color: #f1f5f9;">
+                        <i class="fas fa-sync mr-2 purple-text"></i> Real-time Calibration
+                    </p>
+                    <p class="text-sm" style="color: #cbd5e1;">Continuous adjustment based on environmental factors, fitness level, and recovery state</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Bottom Output Boxes -->
+        <div class="flex justify-between gap-4 mt-8">
+            <div class="output-box flex-1">
+                <div class="icon-circle purple-bg mr-3 flex-shrink-0">
+                    <i class="fas fa-bullseye purple-text"></i>
+                </div>
+                <div>
+                    <p class="font-semibold text-sm" style="color: #f1f5f9;">Smart Opportunities</p>
+                    <p class="text-xs" style="color: #94a3b8;">Personalized suggestions with success probability</p>
+                </div>
+            </div>
+            
+            <div class="output-box flex-1">
+                <div class="icon-circle purple-bg mr-3 flex-shrink-0">
+                    <i class="fas fa-calendar-day purple-text"></i>
+                </div>
+                <div>
+                    <p class="font-semibold text-sm" style="color: #f1f5f9;">Optimal Timeline</p>
+                    <p class="text-xs" style="color: #94a3b8;">Perfect timing for activities based on energy state</p>
+                </div>
+            </div>
+            
+            <div class="output-box flex-1">
+                <div class="icon-circle purple-bg mr-3 flex-shrink-0">
+                    <i class="fas fa-chart-pie purple-text"></i>
+                </div>
+                <div>
+                    <p class="font-semibold text-sm" style="color: #f1f5f9;">Predictions</p>
+                    <p class="text-xs" style="color: #94a3b8;">Future energy forecasts and improvement paths</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+        </div>
+
+        <!-- Slide 5: Energy Intelligence Dashboard -->
+        <div class="slide" data-slide="5">
+
+<div class="slide-container">
+<div class="content flex flex-col h-full px-12 py-8">
+<!-- Header with Logo -->
+<div class="flex justify-between items-center mb-6">
+<h2 class="text-2xl font-bold purple-text">Energy Intelligence Dashboard</h2>
+<img alt="Noise Logo" class="h-10" src="https://page.gensparksite.com/slides_images/0d63dbcc821ba005b6eb246bc9e3b42c.png"/>
+</div>
+<!-- Main Content -->
+<div class="flex flex-1 gap-10">
+<!-- Left Side: Phone Mockup -->
+<div class="flex-1 flex flex-col items-center justify-center">
+<div class="phone-frame">
+<div class="phone-notch"></div>
+<div class="phone-screen">
+<!-- App Header -->
+<div class="text-center mb-4">
+<p class="text-xl font-semibold text-white">Your Energy Today</p>
+</div>
+<!-- Energy Score Circle -->
+<div class="circle-progress">
+<svg viewbox="0 0 160 160" xmlns="http://www.w3.org/2000/svg">
+<circle class="circle-bg" cx="80" cy="80" r="75"></circle>
+<circle class="circle-progress-value" cx="80" cy="80" r="75"></circle>
+</svg>
+<div class="score-value">
+<p class="text-4xl font-bold">83</p>
+<p class="text-sm">/100</p>
+<p class="text-green-500 font-semibold text-sm">EXCELLENT</p>
+</div>
+</div>
+<!-- AI Insight Card -->
+<div class="insight-card">
+<div class="flex items-center mb-2">
+<p class="font-semibold"><span class="mr-1">✨</span> AI Insight</p>
+</div>
+<p class="text-sm text-gray-300">Your energy is high due to good sleep and low stress. Perfect day for challenges!</p>
+</div>
+<!-- Bottom Navigation -->
+<div class="mt-auto pt-4">
+<div class="flex justify-around">
+<div class="text-center">
+<i class="fas fa-shopping-bag text-gray-400"></i>
+<p class="text-xs text-gray-400 mt-1">Shop</p>
+</div>
+<div class="text-center">
+<i class="fas fa-home purple-text"></i>
+<p class="text-xs purple-text mt-1">Home</p>
+</div>
+<div class="text-center">
+<i class="fas fa-users text-gray-400"></i>
+<p class="text-xs text-gray-400 mt-1">Social</p>
+</div>
+<div class="text-center">
+<i class="fas fa-mobile-alt text-gray-400"></i>
+<p class="text-xs text-gray-400 mt-1">Devices</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Right Side: Feature Details -->
+<div class="flex-1 flex flex-col justify-center">
+<h3 class="text-xl font-semibold mb-6">Energy Intelligence Features</h3>
+<!-- Feature Box: Real-Time ML -->
+<div class="feature-box feature-box-ml">
+<div class="flex items-start">
+<div class="icon-box icon-ml">
+<i class="fas fa-robot"></i>
+</div>
+<div>
+<p class="font-semibold mb-1">Real-Time ML Prediction</p>
+<p class="text-sm text-gray-300">Algorithm processes sleep, HRV, activity, and stress patterns in real-time</p>
+</div>
+</div>
+</div>
+<!-- Feature Box: Personalized Performance -->
+<div class="feature-box feature-box-performance">
+<div class="flex items-start">
+<div class="icon-box icon-performance">
+<i class="fas fa-bullseye"></i>
+</div>
+<div>
+<p class="font-semibold mb-1">Personalized Performance</p>
+<p class="text-sm text-gray-300">Each user gets unique scoring based on 30-day baseline</p>
+</div>
+</div>
+</div>
+<!-- Feature Box: Actionable Confidence -->
+<div class="feature-box feature-box-confidence">
+<div class="flex items-start">
+<div class="icon-box icon-confidence">
+<i class="fas fa-chart-bar"></i>
+</div>
+<div>
+<p class="font-semibold mb-1">Actionable Confidence</p>
+<p class="text-sm text-gray-300">Visual feedback helps users understand daily potential</p>
+</div>
+</div>
+</div>
+<!-- Feature Box: Innovation Impact -->
+<div class="feature-box feature-box-impact">
+<div class="flex items-start">
+<div class="icon-box icon-impact">
+<i class="fas fa-lightbulb"></i>
+</div>
+<div>
+<p class="font-semibold mb-1">Innovation Impact</p>
+<p class="text-sm text-gray-300">Users understand potential instantly vs generic tracking</p>
+</div>
+</div>
+</div>
+<!-- Prototype Link -->
+<p class="mt-4 text-sm text-gray-400">Working prototype: <a class="purple-text" href="https://noise-enhanced.vercel.app/">noise-enhanced.vercel.app</a></p>
+</div>
+</div>
+</div>
+</div>
+
+        </div>
+
+        <!-- Slide 6: Personalized Contributors Analysis -->
+        <div class="slide" data-slide="6">
+
+<div class="slide-container">
+<div class="content flex flex-col h-full px-12 py-8">
+<!-- Header with Logo -->
+<div class="flex justify-between items-center mb-6">
+<h2 class="text-2xl font-bold purple-text">Personalized Contributors Analysis</h2>
+<img alt="Noise Logo" class="h-10" src="https://page.gensparksite.com/slides_images/0d63dbcc821ba005b6eb246bc9e3b42c.png"/>
+</div>
+<!-- Main Content -->
+<div class="flex flex-1 gap-10">
+<!-- Left Side: Phone Mockup -->
+<div class="flex-1 flex justify-center items-center">
+<div class="phone-frame">
+<div class="phone-notch"></div>
+<div class="phone-content">
+<!-- Header -->
+<h3 class="text-lg font-semibold mb-4">⚡ What's Powering Your Energy</h3>
+<!-- Sleep Quality Card -->
+<div class="contributor-card">
+<div class="icon-circle sleep-bg">
+<i class="fas fa-moon sleep-text"></i>
+</div>
+<div class="flex-1">
+<div class="flex justify-between items-center">
+<p class="font-medium">Sleep Quality</p>
+<p class="font-bold sleep-text">+18</p>
+</div>
+<p class="text-xs text-gray-400">7.4h • 85% quality</p>
+<div class="progress-container">
+<div class="progress-bar sleep-bar"></div>
+</div>
+</div>
+</div>
+<!-- Heart Fitness Card -->
+<div class="contributor-card">
+<div class="icon-circle heart-bg">
+<i class="fas fa-heartbeat heart-text"></i>
+</div>
+<div class="flex-1">
+<div class="flex justify-between items-center">
+<p class="font-medium">Heart Fitness</p>
+<p class="font-bold heart-text">+22</p>
+</div>
+<p class="text-xs text-gray-400">58 BPM • Excellent</p>
+<div class="progress-container">
+<div class="progress-bar heart-bar"></div>
+</div>
+</div>
+</div>
+<!-- Daily Activity Card -->
+<div class="contributor-card">
+<div class="icon-circle activity-bg">
+<i class="fas fa-running activity-text"></i>
+</div>
+<div class="flex-1">
+<div class="flex justify-between items-center">
+<p class="font-medium">Daily Activity</p>
+<p class="font-bold activity-text">+15</p>
+</div>
+<p class="text-xs text-gray-400">8.5K steps • 320 calories</p>
+<div class="progress-container">
+<div class="progress-bar activity-bar"></div>
+</div>
+</div>
+</div>
+<!-- Stress Control Card -->
+<div class="contributor-card">
+<div class="icon-circle stress-bg">
+<i class="fas fa-brain stress-text"></i>
+</div>
+<div class="flex-1">
+<div class="flex justify-between items-center">
+<p class="font-medium">Stress Control</p>
+<p class="font-bold stress-text">+12</p>
+</div>
+<p class="text-xs text-gray-400">Level 35 • Well managed</p>
+<div class="progress-container">
+<div class="progress-bar stress-bar"></div>
+</div>
+</div>
+</div>
+<!-- Formula Card -->
+<div class="formula-card">
+<p class="font-semibold text-center">
+<span class="sleep-text">18</span> + 
+<span class="heart-text">22</span> + 
+<span class="activity-text">15</span> + 
+<span class="stress-text">12</span> = 
+⚡ <span class="text-white">82 Energy</span>
+</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Right Side: Feature Details -->
+<div class="flex-1 flex flex-col justify-center">
+<h3 class="text-xl font-semibold mb-6">Innovation Features</h3>
+<div class="feature-box">
+<p class="font-semibold mb-1"><i class="fas fa-balance-scale mr-2 purple-text"></i> Personalized Weights</p>
+<p class="text-gray-300">Each contributor has a unique weight based on your 30-day baseline, optimized for your body's response patterns</p>
+</div>
+<div class="feature-box">
+<p class="font-semibold mb-1"><i class="fas fa-award mr-2 purple-text"></i> First-of-its-Kind</p>
+<p class="text-gray-300">Pioneering approach to holistic health scoring with concrete contribution measurements and real-time adaptation</p>
+</div>
+<div class="feature-box">
+<p class="font-semibold mb-1"><i class="fas fa-chart-line mr-2 purple-text"></i> Business Value</p>
+<p class="text-gray-300">Users engage 4.3x longer with personalized contributors vs. generic metrics, driving subscription growth</p>
+</div>
+<div class="feature-box">
+<p class="font-semibold mb-1"><i class="fas fa-quote-right mr-2 purple-text"></i> User Impact</p>
+<p class="text-gray-300">"Finally I understand exactly how each health factor affects my daily performance and what to prioritize"</p>
+</div>
+</div>
+</div>
+<!-- Bottom Footer -->
+<div class="mt-6 text-center text-sm text-gray-400">
+<p><a class="underline purple-text" href="https://noise-enhanced.vercel.app/">https://noise-enhanced.vercel.app/</a> • Accurate prototype interface design</p>
+</div>
+</div>
+</div>
+
+        </div>
+
+        <!-- Slide 7: Smart Opportunities Engine -->
+        <div class="slide" data-slide="7">
+
+<div class="slide-container">
+<div class="content flex flex-col h-full px-12 py-8">
+<!-- Header with Logo -->
+<div class="flex justify-between items-center mb-6">
+<h2 class="text-2xl font-bold purple-text">Smart Opportunities Engine</h2>
+<img alt="Noise Logo" class="h-10" src="https://page.gensparksite.com/slides_images/0d63dbcc821ba005b6eb246bc9e3b42c.png"/>
+</div>
+<!-- Main Content -->
+<div class="flex flex-1 gap-10">
+<!-- Left Side: Phone Mockup -->
+<div class="flex items-center justify-center">
+<div class="phone-frame">
+<div class="phone-notch"></div>
+<div class="phone-screen">
+<!-- App Header -->
+<div class="mb-4">
+<h3 class="text-xl font-semibold mb-1">🎯 Top Opportunities</h3>
+<p class="text-xs text-gray-400">Personalized for Wednesday, Nov 6</p>
+</div>
+<!-- High Priority Opportunity Card -->
+<div class="opportunity-card high-priority">
+<span class="badge high-badge">HIGH IMPACT</span>
+<p class="success-rate"><i class="fas fa-chart-line mr-1"></i> 89% success rate</p>
+<div class="opp-icon high-icon">
+<p class="text-xl">🌬️</p>
+</div>
+<h4 class="text-base font-semibold mb-1">5-min breathing at 2 PM</h4>
+<p class="text-xs text-gray-300">Perfect timing based on your patterns</p>
+<button class="opp-button high-button">Set Reminder</button>
+</div>
+<!-- Medium Priority Opportunity Card -->
+<div class="opportunity-card medium-priority">
+<span class="badge medium-badge">MEDIUM IMPACT</span>
+<p class="success-rate"><i class="fas fa-chart-line mr-1"></i> 76% success rate</p>
+<div class="opp-icon medium-icon">
+<p class="text-xl">🚶</p>
+</div>
+<h4 class="text-base font-semibold mb-1">Evening walk tonight</h4>
+<p class="text-xs text-gray-300">Boost tomorrow's sleep quality</p>
+<button class="opp-button medium-button">Plan Route</button>
+</div>
+<!-- Bottom Note -->
+<div class="mt-auto pt-4 border-t border-gray-700">
+<p class="text-xs text-gray-400">
+<span class="mr-1">🤖 AI Powered</span>
+<span>Pattern matching with 10M+ user outcomes</span>
+</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Right Side: Feature Details -->
+<div class="flex-1 flex flex-col justify-center">
+<h3 class="text-xl font-semibold mb-6">Opportunity Intelligence</h3>
+<div class="feature-box mb-5">
+<div class="flex items-center mb-2">
+<div class="feature-icon">
+<i class="fas fa-bullseye purple-text"></i>
+</div>
+<p class="font-semibold">Success Prediction</p>
+</div>
+<p class="text-gray-300">Our AI analyzes millions of user outcomes to calculate precise success probabilities for each suggested opportunity</p>
+</div>
+<div class="feature-box mb-5">
+<div class="flex items-center mb-2">
+<div class="feature-icon">
+<i class="fas fa-brain purple-text"></i>
+</div>
+<p class="font-semibold">Pattern Matching</p>
+</div>
+<p class="text-gray-300">Advanced algorithms identify optimal intervention moments by analyzing your unique biological rhythms and past behaviors</p>
+</div>
+<div class="feature-box mb-5">
+<div class="flex items-center mb-2">
+<div class="feature-icon">
+<i class="fas fa-clock purple-text"></i>
+</div>
+<p class="font-semibold">Perfect Timing</p>
+</div>
+<p class="text-gray-300">Suggestions are precision-timed for when your body and mind are most receptive to specific activities</p>
+</div>
+<div class="feature-box">
+<div class="flex items-center mb-2">
+<div class="feature-icon">
+<i class="fas fa-chart-line purple-text"></i>
+</div>
+<p class="font-semibold">Revenue Driver</p>
+</div>
+<p class="text-gray-300">Personalized opportunities increase engagement by 47%, driving product recommendations and premium subscription conversion</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+        </div>
+
+        <!-- Slide 8: Optimal Day Timeline -->
+        <div class="slide" data-slide="8">
+
+<div class="slide-container">
+<div class="content flex flex-col h-full px-12 py-8">
+<!-- Header with Logo -->
+<div class="flex justify-between items-center mb-6">
+<h2 class="text-2xl font-bold purple-text">Optimal Day Timeline</h2>
+<img alt="Noise Logo" class="h-10" src="https://page.gensparksite.com/slides_images/0d63dbcc821ba005b6eb246bc9e3b42c.png"/>
+</div>
+<!-- Main Content -->
+<div class="flex flex-1 gap-10">
+<!-- Left Side: Phone Mockup -->
+<div class="flex-1 flex flex-col items-center justify-center">
+<div class="phone-frame">
+<div class="phone-notch"></div>
+<div class="phone-content">
+<!-- App Header -->
+<div class="flex justify-between items-center mb-4">
+<div>
+<p class="font-bold text-xl">📅 Your Optimal Day</p>
+</div>
+</div>
+<!-- Timeline Cards -->
+<div class="timeline-card green-card">
+<div class="time-label green-time">6 AM</div>
+<p class="font-semibold text-base">💪 Peak Workout Window</p>
+<p class="text-sm text-gray-400 mt-1">HRV recovery optimal</p>
+<div class="flex items-center mt-2">
+<p class="text-xs bg-green-900 text-green-400 px-2 py-1 rounded-full">89% success rate</p>
+</div>
+</div>
+<div class="timeline-card purple-card">
+<div class="time-label purple-time">10 AM</div>
+<p class="font-semibold text-base">🧠 Deep Focus Period</p>
+<p class="text-sm text-gray-400 mt-1">Mental clarity peak</p>
+<div class="flex items-center mt-2">
+<p class="text-xs bg-purple-900 text-purple-400 px-2 py-1 rounded-full">Tackle complex tasks</p>
+</div>
+</div>
+<div class="timeline-card yellow-card">
+<div class="time-label yellow-time">2 PM</div>
+<p class="font-semibold text-base">🌬️ Stress Break</p>
+<p class="text-sm text-gray-400 mt-1">5-min breathing</p>
+<div class="flex items-center mt-2">
+<p class="text-xs bg-yellow-900 text-yellow-400 px-2 py-1 rounded-full">Energy dip recovery</p>
+</div>
+</div>
+<div class="timeline-card blue-card">
+<div class="time-label blue-time">7 PM</div>
+<p class="font-semibold text-base">🚶 Evening Walk</p>
+<p class="text-sm text-gray-400 mt-1">Prep for quality sleep</p>
+<div class="flex items-center mt-2">
+<p class="text-xs bg-blue-900 text-blue-400 px-2 py-1 rounded-full">20min optimal</p>
+</div>
+</div>
+<!-- Bottom Note -->
+<div class="mt-4 px-2 py-3 bg-gray-800 rounded-lg flex items-center">
+<div class="mr-3 h-8 w-8 rounded-full bg-purple-900 flex items-center justify-center text-purple-300 text-lg">🔮</div>
+<div>
+<p class="text-xs font-medium">AI Personalized</p>
+<p class="text-xs text-gray-400">Based on your unique circadian patterns</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Right Side: Feature Details -->
+<div class="flex-1 flex flex-col justify-center">
+<h3 class="text-xl font-semibold mb-6">Optimize Your Daily Rhythm</h3>
+<div class="feature-box mb-5">
+<p class="font-semibold mb-1"><i class="fas fa-bullseye mr-2 purple-text"></i> Perfect Timing</p>
+<p class="text-gray-300">AI analysis identifies your body's natural productivity windows for maximum performance and wellness</p>
+</div>
+<div class="feature-box mb-5">
+<p class="font-semibold mb-1"><i class="fas fa-chart-line mr-2 purple-text"></i> Circadian Learning</p>
+<p class="text-gray-300">Machine learning model maps your unique 24-hour energy patterns for personalized scheduling</p>
+</div>
+<div class="feature-box mb-5">
+<p class="font-semibold mb-1"><i class="fas fa-check-circle mr-2 purple-text"></i> Proven Results</p>
+<p class="text-gray-300">Users report 27% higher productivity and 34% better sleep quality following optimal timeline</p>
+</div>
+<div class="feature-box">
+<p class="font-semibold mb-1"><i class="fas fa-comment-alt mr-2 purple-text"></i> User Value</p>
+<p class="text-gray-300">"Finally understand why I'm productive at certain times. This has transformed my work-life balance." - Beta Tester</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+        </div>
+
+        <!-- Slide 9: Enterprise Intelligence Platform -->
+        <div class="slide" data-slide="9">
+
+<div class="slide-container">
+<div class="content flex flex-col h-full px-12 py-8">
+<!-- Header with Logo -->
+<div class="flex justify-between items-center mb-6">
+<h2 class="text-2xl font-bold purple-text">Enterprise Intelligence Platform</h2>
+<img alt="Noise Logo" class="h-10" src="https://page.gensparksite.com/slides_images/0d63dbcc821ba005b6eb246bc9e3b42c.png"/>
+</div>
+<!-- Main Content -->
+<div class="flex flex-1 gap-10">
+<!-- Left Side: Phone Mockup -->
+<div class="flex-1 flex items-center justify-center">
+<div class="phone-frame">
+<div class="phone-notch"></div>
+<!-- Organization Header -->
+<div class="mb-4">
+<p class="text-lg font-semibold flex items-center"><i class="fas fa-building mr-2"></i> Tech Solutions Inc</p>
+<p class="text-sm text-gray-400">Engineering • 247 members</p>
+</div>
+<!-- Team Wellness Card -->
+<div class="enterprise-card flex items-center">
+<p class="text-sm font-medium flex items-center"><i class="fas fa-chart-bar mr-2 purple-text"></i> Team Wellness</p>
+<div class="ml-auto flex flex-col items-center">
+<div class="progress-circle">
+<p class="text-2xl font-bold">70</p>
+<p class="text-xs yellow-text font-semibold">GOOD</p>
+</div>
+</div>
+</div>
+<!-- Department Scores -->
+<div class="enterprise-card">
+<p class="font-medium mb-3">Department Scores</p>
+<!-- Frontend Team -->
+<div class="mb-3">
+<div class="flex justify-between">
+<p class="text-sm">Frontend Team</p>
+<p class="text-sm font-medium">78</p>
+</div>
+<div class="progress-bar">
+<div class="progress-bar-fill-78"></div>
+</div>
+</div>
+<!-- Backend Team -->
+<div>
+<div class="flex justify-between">
+<p class="text-sm">Backend Team</p>
+<p class="text-sm font-medium">65</p>
+</div>
+<div class="progress-bar">
+<div class="progress-bar-fill-65"></div>
+</div>
+</div>
+</div>
+<!-- Team Opportunity Card -->
+<div class="opportunity-card">
+<span class="badge badge-purple">HIGH PRIORITY</span>
+<p class="text-sm font-semibold mb-2">Team stress management program</p>
+<p class="text-xs text-gray-300 mb-3">25% wellness boost potential</p>
+<div class="button text-xs">Suggest to HR</div>
+</div>
+</div>
+</div>
+<!-- Right Side: Feature Details -->
+<div class="flex-1 flex flex-col justify-center">
+<h3 class="text-xl font-semibold mb-6">Enterprise Features</h3>
+<div class="feature-box">
+<p class="font-semibold mb-1"><i class="fas fa-users mr-2 purple-text"></i> Team Intelligence</p>
+<p class="text-gray-300">Aggregated wellness metrics across teams with AI-driven insights for organizational health optimization</p>
+</div>
+<div class="feature-box">
+<p class="font-semibold mb-1"><i class="fas fa-chart-pie mr-2 purple-text"></i> Market Opportunity</p>
+<p class="text-gray-300">₹15 Lakh revenue per 1000 employees with enterprise subscription model</p>
+</div>
+<div class="feature-box">
+<p class="font-semibold mb-1"><i class="fas fa-shield-alt mr-2 purple-text"></i> Privacy First</p>
+<p class="text-gray-300">Team-level aggregation protects individual privacy while enabling organizational wellness tracking</p>
+</div>
+<div class="feature-box">
+<p class="font-semibold mb-1"><i class="fas fa-trophy mr-2 purple-text"></i> Competitive Edge</p>
+<p class="text-gray-300">First-to-market enterprise wellness platform with intelligence capabilities, unlocking new revenue streams</p>
+</div>
+<div class="mt-6 bg-gray-800 rounded-lg p-4 border-l-4 border-yellow-500">
+<p class="italic text-gray-300">"With team wellness insights, we reduced sick days by 22% and improved retention by 15%" - Enterprise Customer</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+        </div>
+
+        <!-- Slide 10: Business Impact &amp; Skills -->
+        <div class="slide" data-slide="10">
+
+<div class="slide-container">
+<div class="content flex flex-col h-full px-12 py-8">
+<!-- Header with Logo -->
+<div class="flex justify-between items-center mb-6">
+<h2 class="text-2xl font-bold purple-text">Business Impact &amp; Skills</h2>
+<img alt="Noise Logo" class="h-10" src="https://page.gensparksite.com/slides_images/0d63dbcc821ba005b6eb246bc9e3b42c.png"/>
+</div>
+<!-- Main Content -->
+<div class="flex flex-1 gap-10">
+<!-- Left Side: Revenue Transformation Chart -->
+<div class="flex-1 flex flex-col items-center justify-center relative">
+<h3 class="text-xl font-semibold mb-6 text-center">Revenue Transformation</h3>
+<div class="flex justify-around items-center w-full relative">
+<!-- Current State (Loss) -->
+<div class="revenue-bar loss-bar w-2/5">
+<p class="text-sm text-gray-300 mb-2">Current</p>
+<p class="text-4xl font-bold text-red-500 mb-2">-₹20 Cr</p>
+<p class="text-xl text-red-500 font-semibold">Loss</p>
+<div class="mt-6">
+<i class="fas fa-chart-line text-5xl text-red-500 transform rotate-45"></i>
+</div>
+</div>
+<!-- Transformation Arrow -->
+<div class="arrow-transition">
+<i class="fas fa-arrow-right"></i>
+</div>
+<!-- Enhanced State (Revenue) -->
+<div class="revenue-bar w-2/5">
+<p class="text-sm text-gray-300 mb-2">Enhanced</p>
+<p class="text-4xl font-bold text-green-500 mb-2">+₹180 Cr</p>
+<p class="text-xl text-green-500 font-semibold">Revenue</p>
+<div class="mt-6">
+<i class="fas fa-chart-line text-5xl text-green-500 transform -rotate-45"></i>
+</div>
+</div>
+</div>
+<p class="mt-8 text-center text-gray-400">
+<i class="fas fa-lightbulb purple-text mr-2"></i>
+                    Intelligence platform transforms loss into substantial revenue
+                </p>
+</div>
+<!-- Right Side: Skills Matrix -->
+<div class="flex-1 flex flex-col justify-center">
+<h3 class="text-xl font-semibold mb-8">Product Manager Skills Matrix</h3>
+<!-- Product Strategy -->
+<div class="mb-10 relative">
+<div class="flex justify-between mb-2">
+<p class="font-semibold">Product Strategy</p>
+<p class="skill-level" style="background-image: linear-gradient(90deg, #6B4CE6, #22c55e);">EXPERT</p>
+</div>
+<div class="progress-bar bg-gray-700">
+<div class="progress-bg" style="width: 95%; background: linear-gradient(90deg, #6B4CE6, #22c55e);"></div>
+</div>
+<div class="progress-label">95%</div>
+</div>
+<!-- Technical Execution -->
+<div class="mb-10 relative">
+<div class="flex justify-between mb-2">
+<p class="font-semibold">Technical Execution</p>
+<p class="skill-level" style="background-image: linear-gradient(90deg, #38bdf8, #22c55e);">ADVANCED</p>
+</div>
+<div class="progress-bar bg-gray-700">
+<div class="progress-bg" style="width: 85%; background: linear-gradient(90deg, #38bdf8, #22c55e);"></div>
+</div>
+<div class="progress-label">85%</div>
+</div>
+<!-- User Experience -->
+<div class="mb-10 relative">
+<div class="flex justify-between mb-2">
+<p class="font-semibold">User Experience</p>
+<p class="skill-level" style="background-image: linear-gradient(90deg, #f59e0b, #22c55e);">ADVANCED</p>
+</div>
+<div class="progress-bar bg-gray-700">
+<div class="progress-bg" style="width: 80%; background: linear-gradient(90deg, #f59e0b, #22c55e);"></div>
+</div>
+<div class="progress-label">80%</div>
+</div>
+<!-- Business Acumen -->
+<div class="mb-10 relative">
+<div class="flex justify-between mb-2">
+<p class="font-semibold">Business Acumen</p>
+<p class="skill-level" style="background-image: linear-gradient(90deg, #ef4444, #22c55e);">EXPERT</p>
+</div>
+<div class="progress-bar bg-gray-700">
+<div class="progress-bg" style="width: 90%; background: linear-gradient(90deg, #ef4444, #22c55e);"></div>
+</div>
+<div class="progress-label">90%</div>
+</div>
+</div>
+</div>
+<!-- Bottom Achievement Badges -->
+<div class="mt-8 text-center">
+<div class="achievement-badge">
+<i class="fas fa-trophy text-yellow-400 mr-2"></i>
+<p>Category Creator - Health Intelligence Platform</p>
+</div>
+<div class="achievement-badge">
+<i class="fas fa-bolt text-purple-400 mr-2"></i>
+<p>Full-Stack PM - Working Prototype Built</p>
+</div>
+</div>
+</div>
+</div>
+
+        </div>
+
+        <!-- Slide 11: Thank You & Live Demo -->
+        <div class="slide" data-slide="11">
+
+<div class="slide-container">
+    <div class="content flex flex-col items-center justify-between py-12 px-16 h-full">
+        <!-- Logo -->
+        <div class="w-full flex flex-col items-center justify-center mb-4">
+            <img alt="Noise Logo" class="h-20 logo-glow" src="https://www.gonoise.com/cdn/shop/files/Artboard_1_wf_1.png?v=1761318524"/>
+            <p class="text-lg uppercase tracking-wider purple-text font-semibold mt-2" style="letter-spacing: 4px;">INTELLIGENCE</p>
+        </div>
+        
+        <!-- Main Content -->
+        <div class="flex-1 flex flex-col items-center justify-center text-center mt-4 mb-6">
+            <h1 class="title-gradient text-7xl mb-6" style="line-height: 1.2;">Thank You!</h1>
+            
+            <!-- Divider -->
+            <div style="width: 300px; height: 2px; background: linear-gradient(90deg, transparent, #6B4CE6, transparent); margin-bottom: 2rem;"></div>
+            
+            <!-- Contact Info -->
+            <div class="contact-box mb-8">
+                <p class="text-xl font-semibold mb-2" style="color: #f1f5f9;">Ayush Tiwari</p>
+                <p class="text-sm" style="color: #94a3b8;">Product Manager • Ready for technical deep dive and questions</p>
+            </div>
+            
+            <!-- Prototype Links -->
+            <div class="flex flex-col space-y-4 mt-4">
+                <a class="link-box demo-link-green flex items-center" href="https://noise-enhanced.vercel.app/" target="_blank">
+                    <i class="fas fa-fire-alt mr-3 text-2xl" style="color: #22c55e;"></i>
+                    <div class="text-left">
+                        <p class="font-semibold text-lg" style="color: #f1f5f9;">🚀 Live Interactive Demo</p>
+                        <p class="text-sm" style="color: #22c55e; font-family: monospace;">noise-enhanced.vercel.app</p>
+                    </div>
+                </a>
+                
+              
+                    
+                  
+               
+            </div>
+        </div>
+        
+        <!-- Bottom Highlights -->
+        <div class="w-full flex justify-center space-x-4 pb-2">
+            <div class="highlight-box">
+                <span class="text-green-400 mr-2 text-xl">✅</span>
+                <p class="text-sm font-semibold" style="color: #f1f5f9;">Working Prototype</p>
+            </div>
+            <div class="highlight-box">
+                <span class="text-yellow-400 mr-2 text-xl">⚡</span>
+                <p class="text-sm font-semibold" style="color: #f1f5f9;">Full-Stack Implementation</p>
+            </div>
+            <div class="highlight-box">
+                <span class="text-blue-400 mr-2 text-xl">📊</span>
+                <p class="text-sm font-semibold" style="color: #f1f5f9;">₹180 Cr Revenue Opportunity</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+        </div>
+
+    </div>
+
+    <!-- Navigation Controls -->
+    <div class="nav-controls">
+        <button class="nav-btn" id="prevBtn">
+            <span>←</span>
+            <span>Previous</span>
+        </button>
+        <div class="slide-counter">
+            <span id="currentSlide">1</span> / <span id="totalSlides">11</span>
+        </div>
+        <button class="nav-btn" id="nextBtn">
+            <span>Next</span>
+            <span>→</span>
+        </button>
+    </div>
+</div>
+
+<script>
+// Presentation Navigation System
+let currentSlide = 1;
+const totalSlides = 11;
+
+const slides = document.querySelectorAll('.slide');
+const prevBtn = document.getElementById('prevBtn');
+const nextBtn = document.getElementById('nextBtn');
+const currentSlideDisplay = document.getElementById('currentSlide');
+
+function init() {
+    updateSlide();
+    updateButtons();
+    if (typeof Chart !== 'undefined') {
+        initializeCharts();
+    }
+}
+
+function updateSlide() {
+    slides.forEach((slide, index) => {
+        if (index + 1 === currentSlide) {
+            slide.classList.add('active');
+        } else {
+            slide.classList.remove('active');
+        }
+    });
+    currentSlideDisplay.textContent = currentSlide;
+}
+
+function updateButtons() {
+    prevBtn.disabled = currentSlide === 1;
+    nextBtn.disabled = currentSlide === totalSlides;
+}
+
+function nextSlide() {
+    if (currentSlide < totalSlides) {
+        currentSlide++;
+        updateSlide();
+        updateButtons();
+    }
+}
+
+function prevSlide() {
+    if (currentSlide > 1) {
+        currentSlide--;
+        updateSlide();
+        updateButtons();
+    }
+}
+
+prevBtn.addEventListener('click', prevSlide);
+nextBtn.addEventListener('click', nextSlide);
+
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowLeft') {
+        prevSlide();
+    } else if (e.key === 'ArrowRight') {
+        nextSlide();
+    }
+});
+
+let touchStartX = 0;
+let touchEndX = 0;
+
+document.addEventListener('touchstart', (e) => {
+    touchStartX = e.changedTouches[0].screenX;
+});
+
+document.addEventListener('touchend', (e) => {
+    touchEndX = e.changedTouches[0].screenX;
+    handleSwipe();
+});
+
+function handleSwipe() {
+    if (touchEndX < touchStartX - 50) {
+        nextSlide();
+    }
+    if (touchEndX > touchStartX + 50) {
+        prevSlide();
+    }
+}
+
+function initializeCharts() {
+    const declineCanvas = document.getElementById('declineChart');
+    const growthCanvas = document.getElementById('growthChart');
+
+    if (declineCanvas && typeof Chart !== 'undefined') {
+        const declineCtx = declineCanvas.getContext('2d');
+        new Chart(declineCtx, {
+            type: 'line',
+            data: {
+                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+                datasets: [{
+                    label: 'Usage Trend',
+                    data: [80, 75, 70, 60, 55, 40],
+                    borderColor: '#ef4444',
+                    backgroundColor: 'rgba(239, 68, 68, 0.1)',
+                    borderWidth: 2,
+                    tension: 0.4,
+                    fill: true
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { legend: { display: false }, tooltip: { enabled: false } },
+                scales: { x: { display: false }, y: { display: false } },
+                elements: { point: { radius: 0 } }
+            }
+        });
+    }
+
+    if (growthCanvas && typeof Chart !== 'undefined') {
+        const growthCtx = growthCanvas.getContext('2d');
+        new Chart(growthCtx, {
+            type: 'line',
+            data: {
+                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+                datasets: [{
+                    label: 'Growth Trend',
+                    data: [30, 45, 60, 70, 80, 90],
+                    borderColor: '#22c55e',
+                    backgroundColor: 'rgba(34, 197, 94, 0.1)',
+                    borderWidth: 2,
+                    tension: 0.4,
+                    fill: true
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { legend: { display: false }, tooltip: { enabled: false } },
+                scales: { x: { display: false }, y: { display: false } },
+                elements: { point: { radius: 0 } }
+            }
+        });
+    }
+}
+
+init();
+</script>
+</body>
+</html>
