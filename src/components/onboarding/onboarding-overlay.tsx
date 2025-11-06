@@ -36,7 +36,7 @@ const steps = [
     position: 'top'
   },
   {
-    target: '.bottom-navigation',
+    target: '.bottom-nav',
     title: '🧭 Navigation Hub',
     content: 'Shop for devices, track social challenges with friends, monitor your connected devices, and access enterprise features (when available).',
     position: 'top'
