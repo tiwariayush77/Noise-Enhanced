@@ -1,25 +1,25 @@
-'use client'
+'use client';
 import { useContext } from 'react';
 import { AppContext } from '@/context/app-context';
 import { Card } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
 import { Button } from '@/components/ui/button';
-import { CheckCircle2, Lock } from 'lucide-react';
+import { CheckCircle2, Lock, Award, Target } from 'lucide-react';
 
 interface ChallengeCardProps {
   title: string;
   rank?: string;
   progress?: number;
   action: string;
-  emoji: string;
+  icon: React.ReactNode;
   subtitle?: string;
   members?: number;
 }
 
-function ChallengeCard({ title, rank, progress, action, emoji, subtitle, members }: ChallengeCardProps) {
+function ChallengeCard({ title, rank, progress, action, icon, subtitle, members }: ChallengeCardProps) {
   return (
     <Card className="p-4 bg-card flex gap-4 items-center">
-      <div className="text-3xl bg-secondary p-3 rounded-lg">{emoji}</div>
+      <div className="text-3xl bg-secondary p-3 rounded-lg">{icon}</div>
       <div className="flex-1">
         <h4 className="font-semibold">{title}</h4>
         {subtitle && <p className="text-xs text-muted-foreground">{subtitle}</p>}
@@ -27,15 +27,17 @@ function ChallengeCard({ title, rank, progress, action, emoji, subtitle, members
         {members && <p className="text-sm text-muted-foreground">{members} members</p>}
         {progress !== undefined && <Progress value={progress} className="h-2 mt-2" />}
       </div>
-      <Button variant="outline" size="sm" className="rounded-3xl h-10">{action}</Button>
+      <Button variant="outline" size="sm" className="rounded-3xl h-10">
+        {action}
+      </Button>
     </Card>
-  )
+  );
 }
 
 interface AchievementBadgeProps {
   title: string;
   subtitle: string;
-  icon: string;
+  icon: React.ReactNode;
   unlocked: boolean;
 }
 
@@ -45,16 +47,29 @@ function AchievementBadge({ title, subtitle, icon, unlocked }: AchievementBadgeP
       <div className="text-3xl bg-secondary p-3 rounded-full">{icon}</div>
       <h4 className="font-semibold">{title}</h4>
       <p className="text-xs text-muted-foreground">{subtitle}</p>
-      {unlocked ? 
-        <div className="flex items-center gap-1 text-success text-xs font-medium"><CheckCircle2 size={14}/> Unlocked</div> :
-        <div className="flex items-center gap-1 text-muted-foreground text-xs font-medium"><Lock size={14}/> Locked</div>
-      }
+      {unlocked ? (
+        <div className="flex items-center gap-1 text-success text-xs font-medium">
+          <CheckCircle2 size={14} /> Unlocked
+        </div>
+      ) : (
+        <div className="flex items-center gap-1 text-muted-foreground text-xs font-medium">
+          <Lock size={14} /> Locked
+        </div>
+      )}
     </Card>
-  )
+  );
 }
 
 export default function CommunityTab() {
   const { mockData } = useContext(AppContext);
+  const challengeIcons: { [key: string]: React.ReactNode } = {
+    c1: <span className="text-2xl">🌧️</span>,
+    c2: <span className="text-2xl">👥</span>,
+  };
+  const achievementIcons: { [key: string]: React.ReactNode } = {
+    a1: <Award />,
+    a2: <Target />,
+  };
 
   return (
     <div className="space-y-6">
@@ -82,34 +97,33 @@ export default function CommunityTab() {
       <div className="space-y-4">
         <h3 className="text-lg font-semibold">🏆 Active Challenges</h3>
         {mockData.challenges.map(challenge => (
-            <ChallengeCard 
-                key={challenge.id}
-                title={challenge.name}
-                rank={challenge.rank ? `${challenge.rank}/${challenge.total}` : undefined}
-                progress={challenge.progress}
-                action={challenge.action}
-                emoji={challenge.emoji}
-                subtitle={challenge.subtitle}
-                members={challenge.members}
-            />
+          <ChallengeCard
+            key={challenge.id}
+            title={challenge.name}
+            rank={challenge.rank ? `${challenge.rank}/${challenge.total}` : undefined}
+            progress={challenge.progress}
+            action={challenge.action}
+            icon={challengeIcons[challenge.id]}
+            subtitle={challenge.subtitle}
+            members={challenge.members}
+          />
         ))}
       </div>
 
       <div className="space-y-4">
         <h3 className="text-lg font-semibold">🏅 Achievements</h3>
         <div className="grid grid-cols-2 gap-4">
-            {mockData.achievements.map(achievement => (
-                <AchievementBadge
-                    key={achievement.id}
-                    title={achievement.title}
-                    subtitle={achievement.subtitle}
-                    icon={achievement.icon}
-                    unlocked={achievement.unlocked}
-                />
-            ))}
+          {mockData.achievements.map(achievement => (
+            <AchievementBadge
+              key={achievement.id}
+              title={achievement.title}
+              subtitle={achievement.subtitle}
+              icon={achievementIcons[achievement.id]}
+              unlocked={achievement.unlocked}
+            />
+          ))}
         </div>
       </div>
-
     </div>
   );
 }

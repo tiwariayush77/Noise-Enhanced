@@ -1,11 +1,12 @@
 'use client';
 
-import { createContext, ReactNode } from 'react';
+import { createContext, ReactNode, useState } from 'react';
 import { MOCK_DATA } from '@/lib/mock-data';
 import type { HealthMetrics, Device, Pattern, User } from '@/lib/types';
 
 interface AppContextType {
   user: User;
+  setUser: (user: User) => void;
   energyScore: number;
   metrics: HealthMetrics;
   devices: Device[];
@@ -15,6 +16,7 @@ interface AppContextType {
 
 export const AppContext = createContext<AppContextType>({
   user: MOCK_DATA.user,
+  setUser: () => {},
   energyScore: MOCK_DATA.energyScore,
   metrics: MOCK_DATA.healthMetrics,
   devices: MOCK_DATA.devices,
@@ -23,8 +25,11 @@ export const AppContext = createContext<AppContextType>({
 });
 
 export const AppContextProvider = ({ children }: { children: ReactNode }) => {
+  const [user, setUser] = useState<User>(MOCK_DATA.user);
+
   const value = {
-    user: MOCK_DATA.user,
+    user,
+    setUser,
     energyScore: MOCK_DATA.energyScore,
     metrics: MOCK_DATA.healthMetrics,
     devices: MOCK_DATA.devices,
