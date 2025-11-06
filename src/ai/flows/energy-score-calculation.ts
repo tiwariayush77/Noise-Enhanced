@@ -4,38 +4,26 @@
  * @fileOverview A flow for calculating the user's energy score based on their health metrics.
  *
  * - calculateEnergyScore - A function that calculates the energy score.
- * - EnergyScoreInput - The input type for the calculateEnergyScore function.
- * - EnergyScoreOutput - The return type for the calculateEnergyScore function.
  */
 
-import {ai} from '@/ai/genkit';
-import {z} from 'genkit';
+import { ai } from '@/ai/genkit';
+import {
+  EnergyScoreInputSchema,
+  type EnergyScoreInput,
+  EnergyScoreOutputSchema,
+  type EnergyScoreOutput,
+} from '@/ai/schemas';
 
-const EnergyScoreInputSchema = z.object({
-  sleepDuration: z.number().describe('Sleep duration in minutes.'),
-  sleepQuality: z.number().describe('Sleep quality percentage.'),
-  restingHeartRate: z.number().describe('Resting heart rate in BPM.'),
-  stressLevel: z.number().describe('Stress level (0-100, lower is better).'),
-  activitySteps: z.number().describe('Number of steps taken.'),
-  activityCalories: z.number().describe('Number of calories burned.'),
-  userHabits: z.string().optional().describe('Description of user habits and routines.'),
-});
-export type EnergyScoreInput = z.infer<typeof EnergyScoreInputSchema>;
-
-const EnergyScoreOutputSchema = z.object({
-  energyScore: z.number().describe('Overall energy score (0-100).'),
-  explanation: z.string().describe('Explanation of how the energy score was calculated.'),
-});
-export type EnergyScoreOutput = z.infer<typeof EnergyScoreOutputSchema>;
-
-export async function calculateEnergyScore(input: EnergyScoreInput): Promise<EnergyScoreOutput> {
+export async function calculateEnergyScore(
+  input: EnergyScoreInput
+): Promise<EnergyScoreOutput> {
   return energyScoreFlow(input);
 }
 
 const energyScorePrompt = ai.definePrompt({
   name: 'energyScorePrompt',
-  input: {schema: EnergyScoreInputSchema},
-  output: {schema: EnergyScoreOutputSchema},
+  input: { schema: EnergyScoreInputSchema },
+  output: { schema: EnergyScoreOutputSchema },
   prompt: `You are an AI health coach. Calculate an overall energy score (0-100) for the user based on the following data. Then explain how the score was calculated, highlighting which factors contributed positively and negatively. Be concise.
 
 Sleep Duration: {{sleepDuration}} minutes
@@ -47,7 +35,12 @@ Activity Calories: {{activityCalories}}
 
 User Habits: {{userHabits}}
 
-Return the result as a JSON object with "energyScore" and "explanation" fields.`,
+Return the result as a JSON object that strictly adheres to the following schema:
+{
+  "energyScore": <number>,
+  "explanation": "<string>"
+}
+The explanation should be a single, concise sentence. For example: "Your energy is high due to good sleep and low stress. Perfect day for challenges! 💪"`,
 });
 
 const energyScoreFlow = ai.defineFlow(
@@ -56,8 +49,8 @@ const energyScoreFlow = ai.defineFlow(
     inputSchema: EnergyScoreInputSchema,
     outputSchema: EnergyScoreOutputSchema,
   },
-  async input => {
-    const {output} = await energyScorePrompt(input);
+  async (input) => {
+    const { output } = await energyScorePrompt(input);
     return output!;
   }
 );

@@ -4,3 +4,4 @@ config();
 import '@/ai/flows/energy-score-calculation.ts';
 import '@/ai/flows/optimal-day-timeline.ts';
 import '@/ai/flows/personalized-insights-engine.ts';
+import '@/ai/flows/intelligence-report.ts';

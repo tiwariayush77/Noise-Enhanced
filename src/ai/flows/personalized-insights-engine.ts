@@ -3,36 +3,17 @@
 /**
  * @fileOverview This file defines a Genkit flow for analyzing historical health data,
  * identifying patterns, and providing personalized insights and recommendations.
- * 
+ *
  * - analyzeHealthData - A function that triggers the health data analysis flow.
- * - HealthDataInput - The input type for the analyzeHealthData function.
- * - HealthDataOutput - The return type for the analyzeHealthData function.
  */
 
-import {ai} from '@/ai/genkit';
-import {z} from 'genkit';
-
-const HealthDataInputSchema = z.object({
-  sleepDuration: z.number().describe('Average sleep duration in minutes.'),
-  sleepQuality: z.number().describe('Average sleep quality score (0-100).'),
-  restingHeartRate: z
-    .number()
-    .describe('Average resting heart rate in beats per minute.'),
-  stressLevel: z.number().describe('Average stress level (0-100).'),
-  activitySteps: z.number().describe('Average daily steps.'),
-  userHabits: z.string().describe('Description of user habits and routines.'),
-});
-export type HealthDataInput = z.infer<typeof HealthDataInputSchema>;
-
-const HealthDataOutputSchema = z.object({
-  insights: z
-    .array(z.string())
-    .describe('Personalized insights based on the health data.'),
-  recommendations: z
-    .array(z.string())
-    .describe('Personalized recommendations for improving health.'),
-});
-export type HealthDataOutput = z.infer<typeof HealthDataOutputSchema>;
+import { ai } from '@/ai/genkit';
+import {
+  HealthDataInputSchema,
+  type HealthDataInput,
+  HealthDataOutputSchema,
+  type HealthDataOutput,
+} from '@/ai/schemas';
 
 export async function analyzeHealthData(
   input: HealthDataInput
@@ -42,8 +23,8 @@ export async function analyzeHealthData(
 
 const healthAnalysisPrompt = ai.definePrompt({
   name: 'healthAnalysisPrompt',
-  input: {schema: HealthDataInputSchema},
-  output: {schema: HealthDataOutputSchema},
+  input: { schema: HealthDataInputSchema },
+  output: { schema: HealthDataOutputSchema },
   prompt: `Analyze the following health data and user habits to provide personalized insights and recommendations.
 
 Health Data:
@@ -67,8 +48,8 @@ const analyzeHealthDataFlow = ai.defineFlow(
     inputSchema: HealthDataInputSchema,
     outputSchema: HealthDataOutputSchema,
   },
-  async input => {
-    const {output} = await healthAnalysisPrompt(input);
+  async (input) => {
+    const { output } = await healthAnalysisPrompt(input);
     return output!;
   }
 );

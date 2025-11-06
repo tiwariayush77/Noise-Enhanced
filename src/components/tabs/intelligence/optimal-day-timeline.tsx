@@ -1,12 +1,13 @@
 'use client';
 import { useState, useEffect, useContext } from 'react';
 import ExpandableCard from '@/components/shared/expandable-card';
-import { generateOptimalDayTimeline, OptimalDayTimelineOutput } from '@/ai/flows/optimal-day-timeline';
+import type { OptimalDayTimelineOutput } from '@/ai/schemas';
 import { AppContext } from '@/context/app-context';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
-import { ArrowRight, CheckCircle, Loader } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
+import { MOCK_DATA } from '@/lib/mock-data';
 
 interface TimeSlotProps {
   time: string;
@@ -23,18 +24,31 @@ const confidenceColors = {
   low: 'bg-destructive/20 text-destructive',
 };
 
-function TimeSlot({ time, title, subtitle, confidence, action, current }: TimeSlotProps) {
+function TimeSlot({
+  time,
+  title,
+  subtitle,
+  confidence,
+  action,
+  current,
+}: TimeSlotProps) {
   return (
-    <div className={cn(
-        "flex items-center gap-4 p-4 rounded-lg transition-all",
-        current ? "bg-primary/10 border-l-4 border-primary" : "bg-secondary/50"
-      )}>
+    <div
+      className={cn(
+        'flex items-center gap-4 p-4 rounded-lg transition-all',
+        current ? 'bg-primary/10 border-l-4 border-primary' : 'bg-secondary/50'
+      )}
+    >
       <div className="flex-1 space-y-1">
         <p className="text-sm font-medium text-muted-foreground">{time}</p>
         <h4 className="font-semibold">{title}</h4>
         <p className="text-sm text-muted-foreground">{subtitle}</p>
       </div>
-      <Button variant="ghost" size="sm" className="bg-accent text-accent-foreground hover:bg-accent/80 h-10 px-4 rounded-3xl">
+      <Button
+        variant="ghost"
+        size="sm"
+        className="bg-accent text-accent-foreground hover:bg-accent/80 h-10 px-4 rounded-3xl"
+      >
         {action} <ArrowRight className="ml-2 h-4 w-4" />
       </Button>
     </div>
@@ -42,34 +56,21 @@ function TimeSlot({ time, title, subtitle, confidence, action, current }: TimeSl
 }
 
 export default function OptimalDayTimeline() {
-  const { metrics, patterns } = useContext(AppContext);
-  const [timelineData, setTimelineData] = useState<OptimalDayTimelineOutput | null>(null);
+  const { aiReport } = useContext(AppContext);
+  const [timelineData, setTimelineData] =
+    useState<OptimalDayTimelineOutput | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    async function getTimeline() {
-      try {
-        setLoading(true);
-        const input = {
-          sleepDuration: metrics.sleep.duration,
-          sleepQuality: metrics.sleep.quality,
-          restingHeartRate: metrics.heartRate.resting,
-          stressLevel: metrics.stress.level,
-          steps: metrics.activity.steps,
-          calories: metrics.activity.calories,
-          activeMinutes: metrics.activity.activeMinutes,
-          habitsAndInsights: patterns.map(p => p.insight),
-        };
-        const result = await generateOptimalDayTimeline(input);
-        setTimelineData(result);
-      } catch (error) {
-        console.error("Failed to generate timeline:", error);
-      } finally {
-        setLoading(false);
-      }
+    if (aiReport) {
+      setTimelineData(aiReport.timeline);
+      setLoading(false);
+    } else {
+      // Fallback to mock data if AI report is not available
+      setTimelineData({ timeline: MOCK_DATA.timeline });
+      setLoading(false);
     }
-    getTimeline();
-  }, [metrics, patterns]);
+  }, [aiReport]);
 
   return (
     <ExpandableCard title="🗓️ Your Optimal Day">
@@ -82,7 +83,7 @@ export default function OptimalDayTimeline() {
       ) : (
         <div className="space-y-3">
           {timelineData?.timeline.map((slot, index) => (
-            <TimeSlot 
+            <TimeSlot
               key={index}
               time={slot.time}
               title={slot.title}
