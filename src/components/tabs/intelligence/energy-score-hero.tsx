@@ -4,6 +4,7 @@ import CircularProgress from '@/components/shared/circular-progress';
 import { AppContext } from '@/context/app-context';
 import { calculateEnergyScore, EnergyScoreOutput } from '@/ai/flows/energy-score-calculation';
 import { Skeleton } from '@/components/ui/skeleton';
+import { TrendingUp } from 'lucide-react';
 
 export default function EnergyScoreHero() {
   const { metrics } = useContext(AppContext);
@@ -44,7 +45,7 @@ export default function EnergyScoreHero() {
   const statusColor = score > 80 ? 'text-success' : score > 60 ? 'text-primary' : score > 40 ? 'text-warning' : 'text-destructive';
 
   if (loading) {
-    return <Skeleton className="h-[280px] w-full rounded-xl" />;
+    return <Skeleton className="h-[218px] w-full rounded-xl" />;
   }
 
   return (
@@ -55,10 +56,12 @@ export default function EnergyScoreHero() {
         <div className="absolute text-center text-primary-foreground">
           <div className="text-3xl font-bold">{score}<span className="text-xl">/100</span></div>
         </div>
+        <div className="absolute -top-2 -right-2 bg-success rounded-full w-6 h-6 flex items-center justify-center border-4 border-primary">
+            <TrendingUp className="w-4 h-4 text-white" />
+        </div>
       </div>
       <div className="text-center mt-4 text-primary-foreground">
         <div className={`text-lg font-bold tracking-wider ${statusColor}`}>{status}</div>
-        <p className="text-sm mt-2 text-primary-foreground/80">{energyData?.explanation}</p>
       </div>
     </div>
   );
