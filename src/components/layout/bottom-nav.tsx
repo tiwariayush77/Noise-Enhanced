@@ -20,30 +20,41 @@ const navItems = [
 ];
 
 export default function BottomNav({ activeTab, setActiveTab, user }: BottomNavProps) {
+  const NavTab = ({ icon: Icon, label, active, onClick }: { icon: any, label: string, active: boolean, onClick: () => void }) => (
+    <button
+      onClick={onClick}
+      className={cn(
+        'flex flex-col items-center justify-center gap-1 transition-colors duration-200 w-20',
+        active ? 'text-primary' : 'text-muted-foreground hover:text-foreground'
+      )}
+      aria-current={active ? 'page' : undefined}
+    >
+      <Icon size={24} strokeWidth={active ? 2.5 : 2} />
+      <span className="text-xs font-medium">{label}</span>
+    </button>
+  );
+
   return (
-    <nav className="fixed bottom-0 left-0 right-0 bg-card border-t border-border h-20">
-      <div className="container mx-auto h-full flex justify-around items-center">
+    <nav className="fixed bottom-0 left-0 right-0 bg-gradient-to-r from-black to-gray-900 border-t border-white/10 backdrop-blur-lg">
+      <div className="container mx-auto h-20 flex justify-around items-center">
         {navItems.map((item) => {
-          if (item.enterpriseOnly && user.accountType !== 'enterprise') {
+          if (item.enterpriseOnly && user?.accountType !== 'enterprise') {
             return null;
           }
-          const isActive = activeTab === item.id;
           return (
-            <button
+            <NavTab
               key={item.id}
+              icon={item.icon}
+              label={item.label}
+              active={activeTab === item.id}
               onClick={() => setActiveTab(item.id as Tab)}
-              className={cn(
-                'flex flex-col items-center justify-center gap-1 transition-colors duration-200 w-20',
-                isActive ? 'text-primary' : 'text-muted-foreground hover:text-foreground'
-              )}
-              aria-current={isActive ? 'page' : undefined}
-            >
-              <item.icon size={24} strokeWidth={isActive ? 2.5 : 2} />
-              <span className="text-xs font-medium">{item.label}</span>
-            </button>
+            />
           );
         })}
       </div>
+       <div className="flex justify-center pb-1">
+          <div className="w-12 h-0.5 bg-gradient-to-r from-transparent via-primary to-transparent rounded-full"></div>
+       </div>
     </nav>
   );
 }

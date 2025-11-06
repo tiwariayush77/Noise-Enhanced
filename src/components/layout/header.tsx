@@ -1,37 +1,62 @@
 'use client';
 
 import { useContext } from 'react';
+import Image from 'next/image';
 import { AppContext } from '@/context/app-context';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Zap, Building2, User as UserIcon } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import { Building2, User as UserIcon } from 'lucide-react';
 
 export default function Header() {
   const { user, setUser } = useContext(AppContext);
 
   const toggleAccountType = () => {
-    setUser({
-      ...user,
-      accountType: user.accountType === 'individual' ? 'enterprise' : 'individual',
-    });
+    if (user) {
+      setUser({
+        ...user,
+        accountType: user.accountType === 'individual' ? 'enterprise' : 'individual',
+      });
+    }
   };
 
   return (
-    <header className="container mx-auto px-4 pt-6 pb-2">
-      <div className="flex justify-between items-center">
-        <div className="flex items-center gap-2">
-          <Zap className="text-primary" size={28} />
-          <h1 className="text-3xl font-bold tracking-tight">InsightFlow</h1>
-        </div>
-        <div className="flex items-center gap-4">
-          <Button onClick={toggleAccountType} size="sm" className="rounded-full">
-            {user.accountType === 'individual' ? <UserIcon size={16} /> : <Building2 size={16} />}
-            <span className="ml-2 hidden sm:inline">{user.accountType === 'individual' ? 'Individual' : 'Enterprise'}</span>
-          </Button>
-          <Avatar>
-            <AvatarImage src={`https://i.pravatar.cc/150?u=${user.id}`} alt={user.name} />
-            <AvatarFallback>{user.name.charAt(0)}</AvatarFallback>
-          </Avatar>
+    <header className="app-header">
+      <div className="container mx-auto px-4 py-3">
+        <div className="flex justify-between items-center">
+          <div className="flex items-center space-x-3">
+            <Image 
+              src="https://cdn.brandfetch.io/idZViZh4Xg/w/820/h/820/theme/dark/logo.png?c=1dxbfHSJFAPEGdCLU4o5B" 
+              alt="Noise"
+              width={32}
+              height={32}
+              className="noise-logo"
+            />
+            <div>
+              <h1 className="text-xl font-bold text-white">NoiseFit</h1>
+              <div className="text-xs text-primary font-medium">Intelligence Platform</div>
+            </div>
+          </div>
+          
+          <div className="flex items-center space-x-3">
+            <button 
+              onClick={toggleAccountType}
+              className="text-xs bg-primary hover:bg-primary/80 px-3 py-1.5 rounded-full transition-colors flex items-center space-x-1 text-primary-foreground"
+            >
+              {user?.accountType === 'individual' ? (
+                <>
+                  <UserIcon className="w-3 h-3" />
+                  <span>Personal</span>
+                </>
+              ) : (
+                <>
+                  <Building2 className="w-3 h-3" />
+                  <span>Enterprise</span>
+                </>
+              )}
+            </button>
+            
+            <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center">
+              <UserIcon className="w-4 h-4 text-primary-foreground" />
+            </div>
+          </div>
         </div>
       </div>
     </header>

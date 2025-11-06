@@ -18,6 +18,25 @@ export default function Home() {
   const { user } = useContext(AppContext);
 
   const renderTabContent = () => {
+    if (!user) {
+      // You can return a loader here
+      return (
+        <div className="fixed inset-0 bg-gradient-to-br from-black via-gray-900 to-primary/20 flex items-center justify-center">
+          <div className="text-center">
+            <img 
+              src="https://cdn.brandfetch.io/idZViZh4Xg/w/820/h/820/theme/dark/logo.png?c=1dxbfHSJFAPEGdCLU4o5B" 
+              alt="Noise" 
+              className="w-16 h-16 mx-auto mb-4 animate-pulse"
+            />
+            <h2 className="text-2xl font-bold text-white mb-2">NoiseFit</h2>
+            <p className="text-primary text-sm">Loading your intelligence...</p>
+            <div className="mt-4 w-32 h-1 bg-gray-700 rounded-full overflow-hidden mx-auto">
+              <div className="h-full bg-gradient-to-r from-primary to-accent rounded-full animate-pulse"></div>
+            </div>
+          </div>
+        </div>
+      );
+    }
     switch (activeTab) {
       case 'intelligence':
         return <IntelligenceTab />;
@@ -38,7 +57,7 @@ export default function Home() {
       <main className="flex-grow container mx-auto px-4 py-6 pb-24">
         {renderTabContent()}
       </main>
-      <BottomNav activeTab={activeTab} setActiveTab={setActiveTab} user={user as User} />
+      {user && <BottomNav activeTab={activeTab} setActiveTab={setActiveTab} user={user as User} />}
     </div>
   );
 }
