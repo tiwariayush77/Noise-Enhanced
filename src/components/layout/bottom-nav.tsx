@@ -42,7 +42,7 @@ export default function BottomNav({ activeTab, setActiveTab, accountType }: Bott
   const isEnterprise = accountType === 'enterprise';
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 bg-black border-t border-gray-800 bottom-navigation">
+    <nav className="fixed bottom-0 left-0 right-0 bg-black border-t border-gray-800 bottom-nav">
       <div
         className={cn(
           'container mx-auto flex items-center justify-around px-1 py-2',

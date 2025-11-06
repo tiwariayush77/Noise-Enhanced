@@ -60,7 +60,7 @@ export default function Header({
             <div className="relative profile-dropdown" ref={profileDropdownRef}>
               <button
                 onClick={() => setShowProfileDropdown(prev => !prev)}
-                className="w-8 h-8 bg-gradient-to-br from-primary to-accent rounded-full flex items-center justify-center"
+                className="w-8 h-8 bg-gradient-to-br from-primary to-accent rounded-full flex items-center justify-center profile-section"
               >
                 <User className="w-4 h-4 text-white" />
               </button>
