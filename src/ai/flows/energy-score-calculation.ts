@@ -36,7 +36,18 @@ const energyScorePrompt = ai.definePrompt({
   name: 'energyScorePrompt',
   input: {schema: EnergyScoreInputSchema},
   output: {schema: EnergyScoreOutputSchema},
-  prompt: `You are an AI health coach. Calculate an overall energy score (0-100) for the user based on the following data. Then explain how the score was calculated, highlighting which factors contributed positively and negatively. Be concise.\n\nSleep Duration: {{sleepDuration}} minutes\nSleep Quality: {{sleepQuality}}%\nResting Heart Rate: {{restingHeartRate}} BPM\nStress Level: {{stressLevel}} (0-100)\nActivity Steps: {{activitySteps}}\nActivity Calories: {{activityCalories}}\n\nUser Habits: {{userHabits}}\n\nEnergy Score:`,
+  prompt: `You are an AI health coach. Calculate an overall energy score (0-100) for the user based on the following data. Then explain how the score was calculated, highlighting which factors contributed positively and negatively. Be concise.
+
+Sleep Duration: {{sleepDuration}} minutes
+Sleep Quality: {{sleepQuality}}%
+Resting Heart Rate: {{restingHeartRate}} BPM
+Stress Level: {{stressLevel}} (0-100)
+Activity Steps: {{activitySteps}}
+Activity Calories: {{activityCalories}}
+
+User Habits: {{userHabits}}
+
+Return the result as a JSON object with "energyScore" and "explanation" fields.`,
 });
 
 const energyScoreFlow = ai.defineFlow(
