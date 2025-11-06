@@ -2,6 +2,7 @@
 
 import { useEffect } from 'react';
 import { cn } from '@/lib/utils';
+import { ChevronLeft, ChevronRight, X } from 'lucide-react';
 
 interface OnboardingOverlayProps {
   step: number;
@@ -17,35 +18,44 @@ const steps = [
     content:
       'AI analyzes sleep, heart rate, activity, and stress to predict your optimal day performance.',
     highlightClass: 'energy-score-section',
+    pointer: '👇 See your current energy score above',
   },
   {
     title: '⚡ Energy Contributors',
     content:
       'See which health factors are boosting or limiting your daily energy score.',
     highlightClass: 'energy-contributors',
+    pointer: '👇 Check the contributors section below',
   },
   {
     title: '🎯 Smart Opportunities',
-    content: 'Personalized recommendations based on your unique health patterns.',
+    content:
+      'Personalized recommendations based on your unique health patterns and proven outcomes.',
     highlightClass: 'smart-opportunities',
+    pointer: '👇 View your opportunities below',
   },
   {
     title: '📅 Optimal Day Timeline',
-    content: 'AI predicts perfect timing for workouts, focus work, and recovery.',
+    content:
+      'AI predicts perfect timing for workouts, focus work, and recovery periods.',
     highlightClass: 'optimal-day-timeline',
+    pointer: '👇 See your timeline below',
   },
   {
     title: '🧭 Navigation',
     content:
       'Shop devices, social challenges, device management, and enterprise features.',
     highlightClass: 'bottom-nav',
+    pointer: '👇 Check the navigation bar below',
   },
   {
     title: '👤 Profile Settings',
     content: 'Switch between Personal and Enterprise modes here.',
     highlightClass: 'profile-section',
+    pointer: '👆 Profile button in the top right',
   },
 ];
+const totalSteps = steps.length;
 
 export default function OnboardingOverlay({
   step,
@@ -54,22 +64,19 @@ export default function OnboardingOverlay({
   onSkip,
   onComplete,
 }: OnboardingOverlayProps) {
-  const totalSteps = steps.length;
-  const currentStep = steps[step];
-
   useEffect(() => {
+    // Remove previous highlights
     document.querySelectorAll('.tour-highlight').forEach((el) => {
       el.classList.remove('tour-highlight');
     });
 
-    if (currentStep) {
-      const currentElement = document.querySelector(
-        `.${currentStep.highlightClass}`
-      );
-      if (currentElement) {
-        currentElement.classList.add('tour-highlight');
-        currentElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      }
+    // Add highlight to current element
+    const currentElement = document.querySelector(
+      `.${steps[step].highlightClass}`
+    );
+    if (currentElement) {
+      currentElement.classList.add('tour-highlight');
+      currentElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
     }
 
     return () => {
@@ -77,76 +84,80 @@ export default function OnboardingOverlay({
         el.classList.remove('tour-highlight');
       });
     };
-  }, [step, currentStep]);
-
-  if (!currentStep) return null;
+  }, [step]);
 
   return (
-    <div className="fixed inset-0 z-[100] bg-black/60 backdrop-blur-sm">
-      <div className="fixed top-20 left-1/2 transform -translate-x-1/2 w-80 max-w-[90vw]">
-        <div className="bg-gray-900 border border-primary/40 rounded-2xl shadow-2xl">
-          <div className="px-5 py-4 border-b border-gray-700">
-            <div className="flex items-center justify-between">
-              <div className="flex space-x-1">
-                {steps.map((_, index) => (
-                  <div
-                    key={index}
-                    className={cn(
-                      'w-2 h-2 rounded-full transition-all duration-300',
-                      index === step
-                        ? 'bg-primary scale-125'
-                        : index < step
-                        ? 'bg-green-400'
-                        : 'bg-gray-600'
-                    )}
-                  />
-                ))}
-              </div>
-              <span className="text-xs text-muted-foreground font-medium">
-                {step + 1} of {totalSteps}
+    <div className="fixed inset-0 z-[100] bg-black/10 backdrop-blur-[0px]">
+      <div className="fixed top-20 left-4 right-4 z-[101] max-w-sm mx-auto">
+        <div className="bg-gray-900/90 backdrop-blur border border-primary/40 rounded-2xl shadow-2xl">
+          <div className="flex items-center justify-between px-4 py-3 border-b border-gray-700">
+            <div className="flex space-x-1">
+              {steps.map((_, index) => (
+                <div
+                  key={index}
+                  className={cn(
+                    'w-2 h-2 rounded-full transition-all duration-300',
+                    index === step
+                      ? 'bg-primary scale-110'
+                      : index < step
+                      ? 'bg-green-400'
+                      : 'bg-gray-600'
+                  )}
+                />
+              ))}
+            </div>
+            <div className="flex items-center space-x-2">
+              <span className="text-xs text-muted-foreground">
+                {step + 1}/{totalSteps}
               </span>
-            </div>
-          </div>
-
-          <div className="px-5 py-4">
-            <h3 className="text-lg font-bold text-white mb-2">
-              {currentStep.title}
-            </h3>
-            <p className="text-sm text-muted-foreground leading-relaxed mb-3">
-              {currentStep.content}
-            </p>
-            <div className="flex items-center space-x-1 text-primary">
-              <div className="w-1 h-1 bg-primary rounded-full animate-pulse"></div>
-              <span className="text-xs">Feature highlighted below</span>
-            </div>
-          </div>
-
-          <div className="px-5 py-4 bg-gray-800/50 rounded-b-2xl">
-            <div className="flex items-center justify-between">
               <button
                 onClick={onSkip}
-                className="text-xs text-muted-foreground hover:text-white transition-colors"
+                className="text-muted-foreground hover:text-white p-1"
               >
-                Skip Tour
+                <X className="w-4 h-4" />
               </button>
+            </div>
+          </div>
 
-              <div className="flex items-center space-x-3">
-                {step > 0 && (
-                  <button
-                    onClick={onPrevious}
-                    className="text-xs text-primary hover:text-primary/80 transition-colors px-2 py-1"
-                  >
-                    Previous
-                  </button>
-                )}
+          <div className="px-4 py-3">
+            <h3 className="text-base font-bold text-white mb-2">
+              {steps[step].title}
+            </h3>
+            <p className="text-sm text-muted-foreground leading-relaxed mb-3">
+              {steps[step].content}
+            </p>
+            <div className="text-xs text-primary flex items-center space-x-1">
+              <div className="w-1 h-1 bg-primary rounded-full animate-pulse"></div>
+              <span>{steps[step].pointer}</span>
+            </div>
+          </div>
 
+          <div className="flex items-center justify-between px-4 py-3 bg-gray-800/50 rounded-b-2xl">
+            <button
+              onClick={onSkip}
+              className="text-sm text-muted-foreground hover:text-white transition-colors"
+            >
+              Skip Tour
+            </button>
+            <div className="flex items-center space-x-2">
+              {step > 0 && (
                 <button
-                  onClick={step === totalSteps - 1 ? onComplete : onNext}
-                  className="bg-primary hover:bg-primary/90 text-white px-4 py-2 rounded-lg text-xs font-semibold transition-colors"
+                  onClick={onPrevious}
+                  className="flex items-center space-x-1 text-sm text-primary hover:text-primary/80 transition-colors"
                 >
-                  {step === totalSteps - 1 ? 'Complete Tour' : 'Next'}
+                  <ChevronLeft className="w-4 h-4" />
+                  <span>Back</span>
                 </button>
-              </div>
+              )}
+              <button
+                onClick={step === totalSteps - 1 ? onComplete : onNext}
+                className="bg-primary hover:bg-primary/90 text-white px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center space-x-1"
+              >
+                <span>{step === totalSteps - 1 ? 'Finish' : 'Next'}</span>
+                {step < totalSteps - 1 && (
+                  <ChevronRight className="w-3 h-3" />
+                )}
+              </button>
             </div>
           </div>
         </div>
