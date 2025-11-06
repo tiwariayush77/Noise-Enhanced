@@ -8,14 +8,22 @@ interface HeaderProps {
   showProfileDropdown: boolean;
   setShowProfileDropdown: Dispatch<SetStateAction<boolean>>;
   profileDropdownRef: RefObject<HTMLDivElement>;
+  onTakeTour: () => void;
 }
 
 export default function Header({
   showProfileDropdown,
   setShowProfileDropdown,
-  profileDropdownRef
+  profileDropdownRef,
+  onTakeTour
 }: HeaderProps) {
   const { accountType, setAccountType } = useContext(AppContext);
+
+  const resetOnboarding = () => {
+    localStorage.removeItem('noisefit-onboarding-complete');
+    onTakeTour();
+    setShowProfileDropdown(false);
+  }
 
   return (
     <header className="app-header">
@@ -28,7 +36,7 @@ export default function Header({
               className="h-6"
               onError={(e) => {
                 const target = e.currentTarget;
-                target.onerror = null; // prevent infinite loop
+                target.onerror = null; 
                 target.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 30'%3E%3Ctext x='10' y='20' fill='white' font-family='Arial' font-size='16' font-weight='bold'%3ENoise%3C/text%3E%3C/svg%3E";
               }}
             />
@@ -37,12 +45,18 @@ export default function Header({
           </div>
 
           <div className="flex items-center space-x-3">
+             <button 
+              onClick={onTakeTour}
+              className="text-xs bg-primary/20 hover:bg-primary/30 text-primary px-3 py-1.5 rounded-full transition-colors"
+            >
+              Take Tour
+            </button>
             <button className="p-2 hover:bg-white/5 rounded-full transition-colors relative">
               <Bell className="w-5 h-5 text-gray-400" />
               <div className="absolute top-1.5 right-1.5 w-2 h-2 bg-primary rounded-full"></div>
             </button>
             
-            <div className="relative" ref={profileDropdownRef}>
+            <div className="relative profile-dropdown" ref={profileDropdownRef}>
               <button
                 onClick={() => setShowProfileDropdown(prev => !prev)}
                 className="w-8 h-8 bg-gradient-to-br from-primary to-accent rounded-full flex items-center justify-center"
@@ -79,9 +93,12 @@ export default function Header({
                       <Settings className="w-4 h-4" />
                       <span>Settings</span>
                     </button>
-                    <button className="w-full flex items-center space-x-2 px-3 py-2 text-sm text-gray-300 hover:bg-gray-800 rounded-lg transition-colors">
+                    <button
+                      onClick={resetOnboarding}
+                      className="w-full flex items-center space-x-2 px-3 py-2 text-sm text-gray-300 hover:bg-gray-800 rounded-lg transition-colors"
+                    >
                       <HelpCircle className="w-4 h-4" />
-                      <span>Help & Support</span>
+                      <span>Take Tour Again</span>
                     </button>
                   </div>
                 </div>

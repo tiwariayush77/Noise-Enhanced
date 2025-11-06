@@ -73,28 +73,30 @@ export default function OptimalDayTimeline() {
   }, [aiReport]);
 
   return (
-    <ExpandableCard title="🗓️ Your Optimal Day">
-      {loading ? (
-        <div className="space-y-4">
-          <Skeleton className="h-24 w-full rounded-lg" />
-          <Skeleton className="h-24 w-full rounded-lg" />
-          <Skeleton className="h-24 w-full rounded-lg" />
-        </div>
-      ) : (
-        <div className="space-y-3">
-          {timelineData?.timeline.map((slot, index) => (
-            <TimeSlot
-              key={index}
-              time={slot.time}
-              title={slot.title}
-              subtitle={slot.subtitle}
-              confidence={slot.confidence}
-              action={slot.action}
-              current={index === 0}
-            />
-          ))}
-        </div>
-      )}
-    </ExpandableCard>
+    <div className="optimal-day-timeline">
+      <ExpandableCard title="🗓️ Your Optimal Day">
+        {loading ? (
+          <div className="space-y-4">
+            <Skeleton className="h-24 w-full rounded-lg" />
+            <Skeleton className="h-24 w-full rounded-lg" />
+            <Skeleton className="h-24 w-full rounded-lg" />
+          </div>
+        ) : (
+          <div className="space-y-3">
+            {timelineData?.timeline.map((slot, index) => (
+              <TimeSlot
+                key={index}
+                time={slot.time}
+                title={slot.title}
+                subtitle={slot.subtitle}
+                confidence={slot.confidence}
+                action={slot.action}
+                current={index === 0}
+              />
+            ))}
+          </div>
+        )}
+      </ExpandableCard>
+    </div>
   );
 }

@@ -10,22 +10,30 @@ import DevicesTab from '@/components/tabs/devices/devices-tab';
 import SocialTab from '@/components/tabs/social/social-tab';
 import ShopTab from '@/components/tabs/shop/shop-tab';
 import EnterpriseTab from '@/components/tabs/enterprise/enterprise-tab';
+import OnboardingOverlay from '@/components/onboarding/onboarding-overlay';
+import WelcomeScreen from '@/components/onboarding/welcome-screen';
 
-export type Tab =
-  | 'home'
-  | 'social'
-  | 'shop'
-  | 'devices'
-  | 'enterprise';
+export type Tab = 'home' | 'social' | 'shop' | 'devices' | 'enterprise';
 
 export default function Home() {
   const { user, accountType, setAccountType } = useContext(AppContext);
   const [activeTab, setActiveTab] = useState<Tab>('home');
   const [showProfileDropdown, setShowProfileDropdown] = useState(false);
   const profileDropdownRef = useRef<HTMLDivElement>(null);
+
+  const [showOnboarding, setShowOnboarding] = useState(false);
+  const [onboardingStep, setOnboardingStep] = useState(0);
+  const [firstTimeUser, setFirstTimeUser] = useState(false);
+  const [showSuccessMessage, setShowSuccessMessage] = useState(false);
+
+  useEffect(() => {
+    const hasSeenOnboarding = localStorage.getItem('noisefit-onboarding-complete');
+    if (hasSeenOnboarding !== 'true') {
+      setFirstTimeUser(true);
+    }
+  }, []);
   
   useEffect(() => {
-    // If switching to individual and currently on enterprise tab, redirect to home
     if (accountType === 'individual' && activeTab === 'enterprise') {
       setActiveTab('home');
     }
@@ -45,8 +53,26 @@ export default function Home() {
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
-  }, [profileDropdownRef]);
+  }, []);
 
+  const handleStartTour = () => {
+    setFirstTimeUser(false);
+    setShowOnboarding(true);
+    setOnboardingStep(0);
+  };
+
+  const handleSkipTour = () => {
+    setFirstTimeUser(false);
+    localStorage.setItem('noisefit-onboarding-complete', 'true');
+  };
+
+  const handleCompleteTour = () => {
+    setShowOnboarding(false);
+    setFirstTimeUser(false);
+    localStorage.setItem('noisefit-onboarding-complete', 'true');
+    setShowSuccessMessage(true);
+    setTimeout(() => setShowSuccessMessage(false), 3000);
+  };
 
   const renderTabContent = () => {
     if (!user) {
@@ -88,12 +114,28 @@ export default function Home() {
     }
   };
 
+  if (firstTimeUser && !showOnboarding) {
+    return <WelcomeScreen onStartTour={handleStartTour} onSkip={handleSkipTour} />;
+  }
+
   return (
     <div className="flex flex-col min-h-screen">
+       {showOnboarding && (
+        <OnboardingOverlay
+          step={onboardingStep}
+          onNext={setOnboardingStep}
+          onSkip={handleCompleteTour}
+          onComplete={handleCompleteTour}
+        />
+      )}
       <Header
         showProfileDropdown={showProfileDropdown}
         setShowProfileDropdown={setShowProfileDropdown}
         profileDropdownRef={profileDropdownRef}
+        onTakeTour={() => {
+          setShowOnboarding(true);
+          setOnboardingStep(0);
+        }}
       />
       <main className="flex-grow container mx-auto px-4 py-6 pb-24">
         {renderTabContent()}

@@ -1,13 +1,13 @@
 'use client';
 import { useContext } from 'react';
 import { AppContext } from '@/context/app-context';
-import { Zap, Moon, Heart, Activity, Brain, Footprints } from 'lucide-react';
+import { Zap, Moon, Heart, Footprints, Brain } from 'lucide-react';
 
 export default function EnergyContributors() {
   const { metrics } = useContext(AppContext);
     
   return (
-    <div className="card-gradient backdrop-blur-lg rounded-xl p-5 mb-6 border border-white/10">
+    <div className="card-gradient backdrop-blur-lg rounded-xl p-5 mb-6 border border-white/10 energy-contributors">
       <div className="flex items-center justify-between mb-4">
         <h3 className="text-lg font-semibold flex items-center">
           <Zap className="w-5 h-5 mr-2 text-yellow-400" />

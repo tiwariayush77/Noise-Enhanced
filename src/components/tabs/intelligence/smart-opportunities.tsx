@@ -57,7 +57,7 @@ export default function SmartOpportunities() {
   const [showAllOpportunities, setShowAllOpportunities] = useState(false);
 
   return (
-    <div className="space-y-3 mb-6">
+    <div className="space-y-3 mb-6 smart-opportunities">
       <div className="flex items-center justify-between">
         <h3 className="text-lg font-semibold flex items-center">
           <Target className="w-5 h-5 mr-2 text-primary" />

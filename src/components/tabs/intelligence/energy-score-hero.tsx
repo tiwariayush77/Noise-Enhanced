@@ -58,7 +58,7 @@ export default function EnergyScoreHero() {
   }
 
   return (
-    <div className="bg-gradient-to-br from-primary via-primary/80 to-purple-800 rounded-xl p-6">
+    <div className="energy-score-section bg-gradient-to-br from-primary via-primary/80 to-purple-800 rounded-xl p-6">
       <h2 className="text-2xl font-semibold mb-4 text-primary-foreground">
         Your Energy Today
       </h2>
