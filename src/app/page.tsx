@@ -8,18 +8,17 @@ import Header from '@/components/layout/header';
 import BottomNav from '@/components/layout/bottom-nav';
 import IntelligenceTab from '@/components/tabs/intelligence/intelligence-tab';
 import DevicesTab from '@/components/tabs/devices/devices-tab';
-import EnterpriseTab from '@/components/tabs/enterprise/enterprise-tab';
 import CommunityTab from '@/components/tabs/community/community-tab';
+import ChallengesTab from '@/components/tabs/challenges/challenges-tab';
 
-export type Tab = 'intelligence' | 'devices' | 'enterprise' | 'community';
+export type Tab = 'home' | 'challenges' | 'friends' | 'shop';
 
 export default function Home() {
-  const [activeTab, setActiveTab] = useState<Tab>('intelligence');
+  const [activeTab, setActiveTab] = useState<Tab>('home');
   const { user } = useContext(AppContext);
 
   const renderTabContent = () => {
     if (!user) {
-      // You can return a loader here
       return (
         <div className="fixed inset-0 bg-gradient-to-br from-black via-gray-900 to-primary/20 flex items-center justify-center">
           <div className="text-center">
@@ -38,14 +37,14 @@ export default function Home() {
       );
     }
     switch (activeTab) {
-      case 'intelligence':
+      case 'home':
         return <IntelligenceTab />;
-      case 'devices':
-        return <DevicesTab />;
-      case 'enterprise':
-        return user.accountType === 'enterprise' ? <EnterpriseTab /> : null;
-      case 'community':
+      case 'challenges':
+        return <ChallengesTab />;
+      case 'friends':
         return <CommunityTab />;
+      case 'shop':
+        return <DevicesTab />;
       default:
         return <IntelligenceTab />;
     }
@@ -57,7 +56,7 @@ export default function Home() {
       <main className="flex-grow container mx-auto px-4 py-6 pb-24">
         {renderTabContent()}
       </main>
-      {user && <BottomNav activeTab={activeTab} setActiveTab={setActiveTab} user={user as User} />}
+      {user && <BottomNav activeTab={activeTab} setActiveTab={setActiveTab} />}
     </div>
   );
 }

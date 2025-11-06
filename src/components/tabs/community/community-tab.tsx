@@ -4,7 +4,7 @@ import { AppContext } from '@/context/app-context';
 import { Card } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
 import { Button } from '@/components/ui/button';
-import { CheckCircle2, Lock, Award, Target, Trophy, CloudRain, Users } from 'lucide-react';
+import { CheckCircle2, Lock, Target, Trophy, CloudRain, Users } from 'lucide-react';
 
 interface ChallengeCardProps {
   title: string;
