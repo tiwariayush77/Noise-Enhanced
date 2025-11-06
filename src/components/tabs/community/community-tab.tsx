@@ -4,7 +4,7 @@ import { AppContext } from '@/context/app-context';
 import { Card } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
 import { Button } from '@/components/ui/button';
-import { CheckCircle2, Lock, Award, Target } from 'lucide-react';
+import { CheckCircle2, Lock, Award, Target, Trophy, CloudRain, Users } from 'lucide-react';
 
 interface ChallengeCardProps {
   title: string;
@@ -63,12 +63,12 @@ function AchievementBadge({ title, subtitle, icon, unlocked }: AchievementBadgeP
 export default function CommunityTab() {
   const { mockData } = useContext(AppContext);
   const challengeIcons: { [key: string]: React.ReactNode } = {
-    c1: <span className="text-2xl">🌧️</span>,
-    c2: <span className="text-2xl">👥</span>,
+    c1: <CloudRain className="text-blue-400" />,
+    c2: <Users className="text-green-400" />,
   };
   const achievementIcons: { [key: string]: React.ReactNode } = {
-    a1: <Award />,
-    a2: <Target />,
+    a1: <Trophy className="text-yellow-400" />,
+    a2: <Target className="text-red-400" />,
   };
 
   return (

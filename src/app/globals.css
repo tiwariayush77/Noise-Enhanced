@@ -36,6 +36,8 @@
     --ring: 261 67% 51%;
 
     --radius: 0.75rem; /* 12px */
+
+    --bg-gradient-brand: radial-gradient(ellipse at top, rgba(107, 76, 230, 0.15) 0%, rgba(107, 76, 230, 0.05) 30%, #0a0a0a 70%);
   }
 
   .dark {
@@ -75,5 +77,16 @@
   }
   body {
     @apply bg-background text-foreground;
+    background: var(--bg-gradient-brand);
+    min-height: 100vh;
   }
+}
+
+.card-gradient {
+  background: linear-gradient(135deg, 
+    rgba(255, 255, 255, 0.05) 0%, 
+    rgba(255, 255, 255, 0.02) 100%
+  );
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }

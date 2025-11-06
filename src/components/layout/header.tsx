@@ -3,7 +3,7 @@
 import { useContext } from 'react';
 import { AppContext } from '@/context/app-context';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Zap, Building2 } from 'lucide-react';
+import { Zap, Building2, User as UserIcon } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 export default function Header() {
@@ -25,7 +25,7 @@ export default function Header() {
         </div>
         <div className="flex items-center gap-4">
           <Button onClick={toggleAccountType} size="sm" className="rounded-full">
-            {user.accountType === 'individual' ? '👤' : <Building2 size={16} />}
+            {user.accountType === 'individual' ? <UserIcon size={16} /> : <Building2 size={16} />}
             <span className="ml-2 hidden sm:inline">{user.accountType === 'individual' ? 'Individual' : 'Enterprise'}</span>
           </Button>
           <Avatar>

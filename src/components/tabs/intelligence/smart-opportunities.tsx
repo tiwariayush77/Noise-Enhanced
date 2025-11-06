@@ -1,8 +1,12 @@
+'use client';
+
+import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { cn } from '@/lib/utils';
-import { TrendingUp, Wind, Footprints, type LucideIcon } from 'lucide-react';
+import { TrendingUp, Wind, Footprints, ChevronDown, Target } from 'lucide-react';
+import type { LucideIcon } from 'lucide-react';
 
 interface OpportunityCardProps {
   priority: 'HIGH' | 'MEDIUM' | 'LOW';
@@ -50,31 +54,49 @@ function OpportunityCard({ priority, icon: Icon, title, subtitle, action, succes
 }
 
 export default function SmartOpportunities() {
+  const [showAllOpportunities, setShowAllOpportunities] = useState(false);
+
   return (
-    <div className="space-y-4">
-      <h3 className="text-lg font-semibold">🎯 Smart Opportunities</h3>
-      <div className="space-y-3">
-        <OpportunityCard
-          priority="HIGH"
-          icon={Wind}
-          title="5-min breathing at 2 PM"
-          subtitle="Perfect timing based on your patterns"
-          successRate={89}
-          action="Set Reminder"
-          gradient="from-primary/20 to-purple-800/20"
-          borderColor="border-primary/30"
-        />
-        <OpportunityCard
-          priority="MEDIUM"
-          icon={Footprints}
-          title="Evening walk tonight"
-          subtitle="Boost tomorrow's sleep quality"
-          successRate={76}
-          action="Plan Route"
-          gradient="from-blue-600/20 to-blue-800/20"
-          borderColor="border-blue-500/30"
-        />
+    <div className="space-y-3 mb-6">
+      <div className="flex items-center justify-between">
+        <h3 className="text-lg font-semibold flex items-center">
+          <Target className="w-5 h-5 mr-2 text-primary" />
+          Top Opportunities
+        </h3>
+        <button
+          onClick={() => setShowAllOpportunities(!showAllOpportunities)}
+          className="text-primary text-sm hover:text-primary/80 flex items-center"
+        >
+          {showAllOpportunities ? 'Show Less' : 'View All'}
+          <ChevronDown className={`w-4 h-4 ml-1 transition-transform ${showAllOpportunities ? 'rotate-180' : ''}`} />
+        </button>
       </div>
+      
+      <OpportunityCard
+        priority="HIGH"
+        icon={Wind}
+        title="5-min breathing at 2 PM"
+        subtitle="Perfect timing based on your patterns"
+        successRate={89}
+        action="Set Reminder"
+        gradient="from-primary/20 to-purple-800/20"
+        borderColor="border-primary/30"
+      />
+      
+      {showAllOpportunities && (
+        <>
+          <OpportunityCard
+            priority="MEDIUM"
+            icon={Footprints}
+            title="Evening walk tonight"
+            subtitle="Boost tomorrow's sleep quality"
+            successRate={76}
+            action="Plan Route"
+            gradient="from-blue-600/20 to-blue-800/20"
+            borderColor="border-blue-500/30"
+          />
+        </>
+      )}
     </div>
   );
 }
