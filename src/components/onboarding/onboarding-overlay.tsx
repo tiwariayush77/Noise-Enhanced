@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect } from 'react';
+import { cn } from '@/lib/utils';
 
 interface OnboardingOverlayProps {
   step: number;
@@ -11,37 +12,40 @@ interface OnboardingOverlayProps {
 }
 
 const steps = [
-    {
-      title: '🔋 Your Daily Energy Score',
-      content: 'AI analyzes sleep, heart rate, activity, and stress to predict your optimal day performance.',
-      highlightClass: 'energy-score-section'
-    },
-    {
-      title: '⚡ Energy Contributors', 
-      content: 'See which health factors are boosting or limiting your daily energy score.',
-      highlightClass: 'energy-contributors'
-    },
-    {
-      title: '🎯 Smart Opportunities',
-      content: 'Personalized recommendations based on your unique health patterns.',
-      highlightClass: 'smart-opportunities'
-    },
-    {
-      title: '📅 Optimal Day Timeline',
-      content: 'AI predicts perfect timing for workouts, focus work, and recovery.',
-      highlightClass: 'optimal-day-timeline'
-    },
-    {
-      title: '🧭 Navigation',
-      content: 'Shop devices, social challenges, device management, and enterprise features.',
-      highlightClass: 'bottom-nav'
-    },
-    {
-      title: '👤 Profile Settings',
-      content: 'Switch between Personal and Enterprise modes here.',
-      highlightClass: 'profile-section'
-    }
-  ];
+  {
+    title: '🔋 Your Daily Energy Score',
+    content:
+      'AI analyzes sleep, heart rate, activity, and stress to predict your optimal day performance.',
+    highlightClass: 'energy-score-section',
+  },
+  {
+    title: '⚡ Energy Contributors',
+    content:
+      'See which health factors are boosting or limiting your daily energy score.',
+    highlightClass: 'energy-contributors',
+  },
+  {
+    title: '🎯 Smart Opportunities',
+    content: 'Personalized recommendations based on your unique health patterns.',
+    highlightClass: 'smart-opportunities',
+  },
+  {
+    title: '📅 Optimal Day Timeline',
+    content: 'AI predicts perfect timing for workouts, focus work, and recovery.',
+    highlightClass: 'optimal-day-timeline',
+  },
+  {
+    title: '🧭 Navigation',
+    content:
+      'Shop devices, social challenges, device management, and enterprise features.',
+    highlightClass: 'bottom-nav',
+  },
+  {
+    title: '👤 Profile Settings',
+    content: 'Switch between Personal and Enterprise modes here.',
+    highlightClass: 'profile-section',
+  },
+];
 
 export default function OnboardingOverlay({
   step,
@@ -58,12 +62,14 @@ export default function OnboardingOverlay({
       el.classList.remove('tour-highlight');
     });
 
-    const currentElement = document.querySelector(
-      `.${currentStep.highlightClass}`
-    );
-    if (currentElement) {
-      currentElement.classList.add('tour-highlight');
-      currentElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    if (currentStep) {
+      const currentElement = document.querySelector(
+        `.${currentStep.highlightClass}`
+      );
+      if (currentElement) {
+        currentElement.classList.add('tour-highlight');
+        currentElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
     }
 
     return () => {
@@ -71,7 +77,9 @@ export default function OnboardingOverlay({
         el.classList.remove('tour-highlight');
       });
     };
-  }, [step, currentStep.highlightClass]);
+  }, [step, currentStep]);
+
+  if (!currentStep) return null;
 
   return (
     <div className="fixed inset-0 z-[100] bg-black/60 backdrop-blur-sm">
@@ -83,13 +91,14 @@ export default function OnboardingOverlay({
                 {steps.map((_, index) => (
                   <div
                     key={index}
-                    className={`w-2 h-2 rounded-full transition-all duration-300 ${
+                    className={cn(
+                      'w-2 h-2 rounded-full transition-all duration-300',
                       index === step
                         ? 'bg-primary scale-125'
                         : index < step
                         ? 'bg-green-400'
                         : 'bg-gray-600'
-                    }`}
+                    )}
                   />
                 ))}
               </div>

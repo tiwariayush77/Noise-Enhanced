@@ -17,20 +17,22 @@ import { useToast } from '@/hooks/use-toast';
 export type Tab = 'home' | 'social' | 'shop' | 'devices' | 'enterprise';
 
 export default function Home() {
-  const { user, accountType, setAccountType } = useContext(AppContext);
+  const { user, accountType } = useContext(AppContext);
   const [activeTab, setActiveTab] = useState<Tab>('home');
   const [showProfileDropdown, setShowProfileDropdown] = useState(false);
   const profileDropdownRef = useRef<HTMLDivElement>(null);
   const { toast } = useToast();
 
+  const [showWelcome, setShowWelcome] = useState(false);
   const [showOnboarding, setShowOnboarding] = useState(false);
   const [onboardingStep, setOnboardingStep] = useState(0);
   const [firstTimeUser, setFirstTimeUser] = useState(false);
 
   useEffect(() => {
-    const hasSeenOnboarding = localStorage.getItem('noisefit-onboarding-complete');
-    if (hasSeenOnboarding !== 'true') {
+    const hasSeenWelcome = localStorage.getItem('noisefit-welcome-seen');
+    if (hasSeenWelcome !== 'true') {
       setFirstTimeUser(true);
+      setShowWelcome(true);
     }
   }, []);
 
@@ -55,28 +57,37 @@ export default function Home() {
       document.removeEventListener('mousedown', handleClickOutside);
     };
   }, []);
-
+  
   const handleStartTour = () => {
-    setFirstTimeUser(false);
+    setShowWelcome(false);
     setShowOnboarding(true);
     setOnboardingStep(0);
+    localStorage.setItem('noisefit-welcome-seen', 'true');
   };
 
-  const handleSkipTour = () => {
+  const handleSkipToApp = () => {
+    setShowWelcome(false);
     setFirstTimeUser(false);
-    setShowOnboarding(false);
-    localStorage.setItem('noisefit-onboarding-complete', 'true');
+    localStorage.setItem('noisefit-welcome-seen', 'true');
+    localStorage.setItem('noisefit-tour-skipped', 'true');
   };
 
   const handleCompleteTour = () => {
     setShowOnboarding(false);
     setFirstTimeUser(false);
-    localStorage.setItem('noisefit-onboarding-complete', 'true');
+    localStorage.setItem('noisefit-tour-complete', 'true');
     toast({
       title: 'Welcome to NoiseFit Intelligence! 🎉',
       description: "You're all set to explore your health insights.",
     });
   };
+
+  const handleSkipTour = () => {
+    setShowOnboarding(false);
+    setFirstTimeUser(false);
+    localStorage.setItem('noisefit-tour-skipped', 'true');
+  };
+
 
   const renderTabContent = () => {
     if (!user) {
@@ -96,6 +107,10 @@ export default function Home() {
           </div>
         </div>
       );
+    }
+    
+    if (showWelcome) {
+      return <WelcomeScreen onStartTour={handleStartTour} onSkip={handleSkipToApp} />;
     }
 
     if (accountType === 'enterprise' && activeTab === 'home') {
@@ -117,9 +132,9 @@ export default function Home() {
         return <IntelligenceTab />;
     }
   };
-
-  if (firstTimeUser && !showOnboarding) {
-    return <WelcomeScreen onStartTour={handleStartTour} onSkip={handleSkipTour} />;
+  
+  if (showWelcome) {
+    return <WelcomeScreen onStartTour={handleStartTour} onSkip={handleSkipToApp} />;
   }
 
   return (
@@ -134,6 +149,7 @@ export default function Home() {
         />
       )}
       <Header
+        firstTimeUser={firstTimeUser}
         showProfileDropdown={showProfileDropdown}
         setShowProfileDropdown={setShowProfileDropdown}
         profileDropdownRef={profileDropdownRef}

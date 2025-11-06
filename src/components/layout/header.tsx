@@ -5,6 +5,7 @@ import { AppContext } from '@/context/app-context';
 import { User, Bell, Building2, Settings, HelpCircle } from 'lucide-react';
 
 interface HeaderProps {
+  firstTimeUser: boolean;
   showProfileDropdown: boolean;
   setShowProfileDropdown: Dispatch<SetStateAction<boolean>>;
   profileDropdownRef: RefObject<HTMLDivElement>;
@@ -12,18 +13,20 @@ interface HeaderProps {
 }
 
 export default function Header({
+  firstTimeUser,
   showProfileDropdown,
   setShowProfileDropdown,
   profileDropdownRef,
-  onTakeTour
+  onTakeTour,
 }: HeaderProps) {
   const { accountType, setAccountType } = useContext(AppContext);
 
   const resetOnboarding = () => {
-    localStorage.removeItem('noisefit-onboarding-complete');
-    setShowProfileDropdown(false);
-    onTakeTour();
-  }
+    localStorage.removeItem('noisefit-welcome-seen');
+    localStorage.removeItem('noisefit-tour-complete');
+    localStorage.removeItem('noisefit-tour-skipped');
+    window.location.reload();
+  };
 
   return (
     <header className="app-header">
@@ -36,8 +39,9 @@ export default function Header({
               className="h-6"
               onError={(e) => {
                 const target = e.currentTarget;
-                target.onerror = null; 
-                target.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 30'%3E%3Ctext x='10' y='20' fill='white' font-family='Arial' font-size='16' font-weight='bold'%3ENoise%3C/text%3E%3C/svg%3E";
+                target.onerror = null;
+                target.src =
+                  "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 30'%3E%3Ctext x='10' y='20' fill='white' font-family='Arial' font-size='16' font-weight='bold'%3ENoise%3C/text%3E%3C/svg%3E";
               }}
             />
             <div className="h-4 w-px bg-gray-600"></div>
@@ -45,22 +49,15 @@ export default function Header({
           </div>
 
           <div className="flex items-center space-x-3">
-             <button 
-              onClick={onTakeTour}
-              className="bg-primary hover:bg-primary/90 text-primary-foreground text-xs px-4 py-2 rounded-full font-medium transition-colors flex items-center space-x-1"
-            >
-              <HelpCircle className="w-3 h-3" />
-              <span>Take Tour</span>
-            </button>
             <button className="p-2 hover:bg-white/5 rounded-full transition-colors relative">
               <Bell className="w-5 h-5 text-gray-400" />
               <div className="absolute top-1.5 right-1.5 w-2 h-2 bg-primary rounded-full"></div>
             </button>
-            
-            <div className="relative profile-dropdown" ref={profileDropdownRef}>
+
+            <div className="relative profile-section" ref={profileDropdownRef}>
               <button
-                onClick={() => setShowProfileDropdown(prev => !prev)}
-                className="w-8 h-8 bg-gradient-to-br from-primary to-accent rounded-full flex items-center justify-center profile-section"
+                onClick={() => setShowProfileDropdown((prev) => !prev)}
+                className="w-8 h-8 bg-gradient-to-br from-primary to-accent rounded-full flex items-center justify-center"
               >
                 <User className="w-4 h-4 text-white" />
               </button>
@@ -75,7 +72,9 @@ export default function Header({
                   <div className="p-2">
                     <button
                       onClick={() => {
-                        setAccountType(prev => prev === 'individual' ? 'enterprise' : 'individual');
+                        setAccountType((prev) =>
+                          prev === 'individual' ? 'enterprise' : 'individual'
+                        );
                         setShowProfileDropdown(false);
                       }}
                       className="w-full flex items-center justify-between px-3 py-2 text-sm text-gray-300 hover:bg-gray-800 rounded-lg transition-colors"
@@ -86,7 +85,9 @@ export default function Header({
                         ) : (
                           <Building2 className="w-4 h-4" />
                         )}
-                        <span>{accountType === 'individual' ? 'Personal' : 'Enterprise'}</span>
+                        <span>
+                          {accountType === 'individual' ? 'Personal' : 'Enterprise'}
+                        </span>
                       </div>
                       <div className="text-xs text-primary">Switch</div>
                     </button>
@@ -95,11 +96,21 @@ export default function Header({
                       <span>Settings</span>
                     </button>
                     <button
+                      onClick={() => {
+                        setShowProfileDropdown(false);
+                        onTakeTour();
+                      }}
+                      className="w-full flex items-center space-x-2 px-3 py-2 text-sm text-gray-300 hover:bg-gray-800 rounded-lg transition-colors"
+                    >
+                      <HelpCircle className="w-4 h-4" />
+                      <span>Take Tour</span>
+                    </button>
+                     <button
                       onClick={resetOnboarding}
                       className="w-full flex items-center space-x-2 px-3 py-2 text-sm text-gray-300 hover:bg-gray-800 rounded-lg transition-colors"
                     >
                       <HelpCircle className="w-4 h-4" />
-                      <span>Take Tour Again</span>
+                      <span>Reset Onboarding</span>
                     </button>
                   </div>
                 </div>
