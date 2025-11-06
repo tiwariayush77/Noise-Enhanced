@@ -74,7 +74,7 @@ export default function OptimalDayTimeline() {
 
   return (
     <div className="optimal-day-timeline">
-      <ExpandableCard title="🗓️ Your Optimal Day">
+      <ExpandableCard title="📅 Your Optimal Day">
         {loading ? (
           <div className="space-y-4">
             <Skeleton className="h-24 w-full rounded-lg" />
