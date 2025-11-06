@@ -1,9 +1,10 @@
 'use client';
 
 import type { Dispatch, SetStateAction } from 'react';
-import { Home, Trophy, Users, ShoppingBag } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import type { Tab } from '@/app/page';
+import { Home, Trophy, Users, ShoppingBag } from 'lucide-react';
+
 
 interface BottomNavProps {
   activeTab: Tab;
