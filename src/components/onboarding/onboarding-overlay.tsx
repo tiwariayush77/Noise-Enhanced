@@ -1,10 +1,11 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 
 interface OnboardingOverlayProps {
   step: number;
-  onNext: (step: number) => void;
+  onNext: () => void;
+  onPrevious: () => void;
   onSkip: () => void;
   onComplete: () => void;
 }
@@ -48,122 +49,95 @@ const steps = [
   }
 ];
 
-const getElementCenter = (selector: string) => {
-  const element = document.querySelector(selector);
-  if (!element) return '50% 50%';
-  const rect = element.getBoundingClientRect();
-  return `${rect.left + rect.width / 2}px ${rect.top + rect.height / 2}px`;
-};
 
-const getCardPosition = (position: string, targetSelector: string) => {
-  const element = document.querySelector(targetSelector);
-  if (!element) return 'top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2';
-  const rect = element.getBoundingClientRect();
-  
-  if (position === 'bottom') {
-    return `top-[${rect.bottom + 20}px] left-1/2 -translate-x-1/2`;
-  }
-  return `bottom-[${window.innerHeight - rect.top + 20}px] left-1/2 -translate-x-1/2`;
-};
-
-
-export default function OnboardingOverlay({ step, onNext, onSkip, onComplete }: OnboardingOverlayProps) {
-  const [targetPosition, setTargetPosition] = useState({ x: '50%', y: '50%' });
-
+export default function OnboardingOverlay({ step, onNext, onPrevious, onSkip, onComplete }: OnboardingOverlayProps) {
   const currentStep = steps[step];
+  const totalSteps = steps.length;
 
   useEffect(() => {
     const targetElement = document.querySelector(currentStep.target);
     if (targetElement) {
-      const rect = targetElement.getBoundingClientRect();
-      setTargetPosition({
-        x: `${rect.left + rect.width / 2}px`,
-        y: `${rect.top + rect.height / 2}px`,
-      });
       targetElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
     }
   }, [step, currentStep.target]);
 
-  const cardStyle: React.CSSProperties = {};
-  const targetElement = document.querySelector(currentStep.target);
-  if (targetElement) {
-    const rect = targetElement.getBoundingClientRect();
-    if (currentStep.position === 'bottom') {
-      cardStyle.top = `${rect.bottom + 20}px`;
-    } else {
-      cardStyle.top = `${rect.top - 20}px`;
-      cardStyle.transform = 'translateY(-100%)';
-    }
-    cardStyle.left = `${rect.left + rect.width / 2}px`;
-    cardStyle.transform = `${cardStyle.transform || ''} translateX(-50%)`;
-
-     // Adjust if card goes off-screen
-    if(rect.left + rect.width / 2 - 192 < 0) cardStyle.left = `16px`; cardStyle.transform = `translateY(${cardStyle.transform ? '-100%' : '0'})`;
-    if(rect.left + rect.width / 2 + 192 > window.innerWidth) cardStyle.left = `${window.innerWidth - 16}px`; cardStyle.transform = `translateY(${cardStyle.transform ? '-100%' : '0'}) translateX(-100%)`;
-  }
-
-
   return (
-    <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm transition-all duration-500">
+    <div className="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm">
       <div
         className="absolute inset-0 transition-all duration-500"
         style={{
-          background: `radial-gradient(circle at ${targetPosition.x} ${targetPosition.y}, transparent 120px, rgba(0,0,0,0.8) 200px)`
+          background: `radial-gradient(circle at ${getElementCenter(currentStep.target)}, transparent 120px, rgba(0,0,0,0.8) 200px)`
         }}
       />
       
-      <div style={cardStyle} className="absolute max-w-sm w-[calc(100vw-32px)] mx-4 transition-all duration-500">
-        <div className="bg-gray-900 border border-primary/30 rounded-2xl p-6 shadow-2xl">
-          <div className="flex items-center justify-between mb-4">
-            <div className="flex space-x-1">
-              {steps.map((_, index) => (
-                <div 
-                  key={index}
-                  className={`w-2 h-2 rounded-full transition-colors ${
-                    index === step ? 'bg-primary' : 
-                    index < step ? 'bg-green-400' : 'bg-gray-600'
-                  }`}
-                />
-              ))}
+       <div className="fixed inset-x-4 bottom-24 top-auto z-60 max-w-md mx-auto">
+        <div className="bg-gradient-to-br from-gray-900 to-gray-800 border-2 border-primary/40 rounded-2xl shadow-2xl">
+          
+          <div className="px-6 py-4 border-b border-gray-700">
+            <div className="flex items-center justify-between">
+               <div className="flex space-x-1.5">
+                {steps.map((_, index) => (
+                  <div 
+                    key={index}
+                    className={`w-2 h-2 rounded-full transition-colors ${
+                      index === step ? 'bg-primary' : 
+                      index < step ? 'bg-green-400' : 'bg-gray-600'
+                    }`}
+                  />
+                ))}
+              </div>
+              <span className="text-xs text-muted-foreground font-medium">
+                {step + 1} of {totalSteps}
+              </span>
             </div>
-            <span className="text-xs text-muted-foreground">{step + 1} of {steps.length}</span>
           </div>
           
-          <h3 className="text-lg font-semibold mb-3 text-white">
-            {currentStep.title}
-          </h3>
-          <p className="text-sm text-muted-foreground mb-6 leading-relaxed">
-            {currentStep.content}
-          </p>
+          <div className="px-6 py-5">
+            <h3 className="text-xl font-bold text-white mb-3">
+              {currentStep.title}
+            </h3>
+            <p className="text-sm text-muted-foreground leading-relaxed">
+              {currentStep.content}
+            </p>
+          </div>
           
-          <div className="flex items-center justify-between">
-            <button 
-              onClick={onSkip}
-              className="text-sm text-muted-foreground hover:text-white transition-colors"
-            >
-              Skip Tour
-            </button>
-            
-            <div className="flex items-center space-x-3">
-              {step > 0 && (
-                <button 
-                  onClick={() => onNext(step - 1)}
-                  className="text-sm text-primary hover:text-primary/80 transition-colors"
-                >
-                  Previous
-                </button>
-              )}
-              
+          <div className="px-6 py-4 bg-gray-800/50 rounded-b-2xl">
+            <div className="flex items-center justify-between">
               <button 
-                onClick={() => step === steps.length - 1 ? onComplete() : onNext(step + 1)}
-                className="bg-primary hover:bg-primary/90 text-primary-foreground px-4 py-2 rounded-lg text-sm font-medium transition-colors"
+                onClick={onSkip}
+                className="text-sm text-muted-foreground hover:text-white transition-colors py-2 px-1"
               >
-                {step === steps.length - 1 ? 'Get Started' : 'Next'}
+                Skip Tour
               </button>
+              
+              <div className="flex items-center space-x-3">
+                {step > 0 && (
+                  <button 
+                    onClick={onPrevious}
+                    className="text-sm text-primary hover:text-primary/80 transition-colors py-2 px-3"
+                  >
+                    Previous
+                  </button>
+                )}
+                
+                <button 
+                  onClick={step === totalSteps - 1 ? onComplete : onNext}
+                  className="bg-primary hover:bg-primary/90 text-primary-foreground px-6 py-2.5 rounded-xl text-sm font-semibold transition-colors"
+                >
+                  {step === totalSteps - 1 ? 'Get Started!' : 'Next'}
+                </button>
+              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
   );
+};
+
+const getElementCenter = (selector: string) => {
+  const element = document.querySelector(selector);
+  if (!element) return '50% 50%';
+  const rect = element.getBoundingClientRect();
+  return `${rect.left + rect.width / 2}px ${rect.top + rect.height / 2}px`;
 };

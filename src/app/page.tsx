@@ -12,6 +12,7 @@ import ShopTab from '@/components/tabs/shop/shop-tab';
 import EnterpriseTab from '@/components/tabs/enterprise/enterprise-tab';
 import OnboardingOverlay from '@/components/onboarding/onboarding-overlay';
 import WelcomeScreen from '@/components/onboarding/welcome-screen';
+import { useToast } from '@/hooks/use-toast';
 
 export type Tab = 'home' | 'social' | 'shop' | 'devices' | 'enterprise';
 
@@ -20,11 +21,11 @@ export default function Home() {
   const [activeTab, setActiveTab] = useState<Tab>('home');
   const [showProfileDropdown, setShowProfileDropdown] = useState(false);
   const profileDropdownRef = useRef<HTMLDivElement>(null);
+  const { toast } = useToast();
 
   const [showOnboarding, setShowOnboarding] = useState(false);
   const [onboardingStep, setOnboardingStep] = useState(0);
   const [firstTimeUser, setFirstTimeUser] = useState(false);
-  const [showSuccessMessage, setShowSuccessMessage] = useState(false);
 
   useEffect(() => {
     const hasSeenOnboarding = localStorage.getItem('noisefit-onboarding-complete');
@@ -32,7 +33,7 @@ export default function Home() {
       setFirstTimeUser(true);
     }
   }, []);
-  
+
   useEffect(() => {
     if (accountType === 'individual' && activeTab === 'enterprise') {
       setActiveTab('home');
@@ -63,6 +64,7 @@ export default function Home() {
 
   const handleSkipTour = () => {
     setFirstTimeUser(false);
+    setShowOnboarding(false);
     localStorage.setItem('noisefit-onboarding-complete', 'true');
   };
 
@@ -70,8 +72,10 @@ export default function Home() {
     setShowOnboarding(false);
     setFirstTimeUser(false);
     localStorage.setItem('noisefit-onboarding-complete', 'true');
-    setShowSuccessMessage(true);
-    setTimeout(() => setShowSuccessMessage(false), 3000);
+    toast({
+      title: 'Welcome to NoiseFit Intelligence! 🎉',
+      description: "You're all set to explore your health insights.",
+    });
   };
 
   const renderTabContent = () => {
@@ -120,11 +124,12 @@ export default function Home() {
 
   return (
     <div className="flex flex-col min-h-screen">
-       {showOnboarding && (
+      {showOnboarding && (
         <OnboardingOverlay
           step={onboardingStep}
-          onNext={setOnboardingStep}
-          onSkip={handleCompleteTour}
+          onNext={() => setOnboardingStep((prev) => prev + 1)}
+          onPrevious={() => setOnboardingStep((prev) => prev - 1)}
+          onSkip={handleSkipTour}
           onComplete={handleCompleteTour}
         />
       )}

@@ -21,8 +21,8 @@ export default function Header({
 
   const resetOnboarding = () => {
     localStorage.removeItem('noisefit-onboarding-complete');
-    onTakeTour();
     setShowProfileDropdown(false);
+    onTakeTour();
   }
 
   return (
@@ -47,9 +47,10 @@ export default function Header({
           <div className="flex items-center space-x-3">
              <button 
               onClick={onTakeTour}
-              className="text-xs bg-primary/20 hover:bg-primary/30 text-primary px-3 py-1.5 rounded-full transition-colors"
+              className="bg-primary hover:bg-primary/90 text-primary-foreground text-xs px-4 py-2 rounded-full font-medium transition-colors flex items-center space-x-1"
             >
-              Take Tour
+              <HelpCircle className="w-3 h-3" />
+              <span>Take Tour</span>
             </button>
             <button className="p-2 hover:bg-white/5 rounded-full transition-colors relative">
               <Bell className="w-5 h-5 text-gray-400" />
