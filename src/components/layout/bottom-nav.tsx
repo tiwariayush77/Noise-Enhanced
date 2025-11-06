@@ -3,7 +3,7 @@
 import type { Dispatch, SetStateAction } from 'react';
 import { cn } from '@/lib/utils';
 import type { Tab } from '@/app/page';
-import { Home, Trophy, Users, ShoppingBag } from 'lucide-react';
+import { Home, Trophy, Users, ShoppingBag, Smartphone } from 'lucide-react';
 
 
 interface BottomNavProps {
@@ -35,9 +35,9 @@ const NavButton = ({ active, onClick, icon, label }: NavButtonProps) => (
 export default function BottomNav({ activeTab, setActiveTab }: BottomNavProps) {
   return (
     <nav className="fixed bottom-0 left-0 right-0 bg-black border-t border-gray-800">
-      <div className="container mx-auto flex items-center justify-around px-2 py-1">
+      <div className="container mx-auto flex items-center justify-around px-1 py-2">
         <NavButton
-          active={activeTab === 'home'}
+          active={activeTab === 'home' || activeTab === 'enterprise'}
           onClick={() => setActiveTab('home')}
           icon={<Home className="w-5 h-5" />}
           label="Home"
@@ -59,6 +59,12 @@ export default function BottomNav({ activeTab, setActiveTab }: BottomNavProps) {
           onClick={() => setActiveTab('shop')}
           icon={<ShoppingBag className="w-5 h-5" />}
           label="Shop"
+        />
+        <NavButton
+          active={activeTab === 'devices'}
+          onClick={() => setActiveTab('devices')}
+          icon={<Smartphone className="w-5 h-5" />}
+          label="Devices"
         />
       </div>
     </nav>

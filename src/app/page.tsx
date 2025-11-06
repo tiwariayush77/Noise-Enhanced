@@ -2,7 +2,6 @@
 
 import { useState, useContext } from 'react';
 import { AppContext } from '@/context/app-context';
-import type { User } from '@/lib/types';
 
 import Header from '@/components/layout/header';
 import BottomNav from '@/components/layout/bottom-nav';
@@ -10,13 +9,15 @@ import IntelligenceTab from '@/components/tabs/intelligence/intelligence-tab';
 import DevicesTab from '@/components/tabs/devices/devices-tab';
 import CommunityTab from '@/components/tabs/community/community-tab';
 import ChallengesTab from '@/components/tabs/challenges/challenges-tab';
+import ShopTab from '@/components/tabs/shop/shop-tab';
+import EnterpriseTab from '@/components/tabs/enterprise/enterprise-tab';
 
-export type Tab = 'home' | 'challenges' | 'friends' | 'shop';
+export type Tab = 'home' | 'challenges' | 'friends' | 'shop' | 'devices' | 'enterprise';
 
 export default function Home() {
+  const { user, accountType } = useContext(AppContext);
   const [activeTab, setActiveTab] = useState<Tab>('home');
-  const { user } = useContext(AppContext);
-
+  
   const renderTabContent = () => {
     if (!user) {
       return (
@@ -36,6 +37,11 @@ export default function Home() {
         </div>
       );
     }
+
+    if (accountType === 'enterprise' && activeTab === 'home') {
+      return <EnterpriseTab />;
+    }
+
     switch (activeTab) {
       case 'home':
         return <IntelligenceTab />;
@@ -44,7 +50,11 @@ export default function Home() {
       case 'friends':
         return <CommunityTab />;
       case 'shop':
+        return <ShopTab />;
+      case 'devices':
         return <DevicesTab />;
+      case 'enterprise':
+        return <EnterpriseTab />;
       default:
         return <IntelligenceTab />;
     }

@@ -5,9 +5,7 @@ import CircularProgress from '@/components/shared/circular-progress';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { cn } from '@/lib/utils';
-import { Wifi, WifiOff, Watch, Radio, BrainCircuit } from 'lucide-react';
-import type { LucideIcon } from 'lucide-react';
+import { Wifi, WifiOff, Watch, Radio, Zap } from 'lucide-react';
 
 interface DeviceCardProps {
   name: string;
@@ -29,8 +27,13 @@ const RingIcon = () => (
 );
 
 
-function DeviceCard({ name, battery, daysLeft, status, contribution, potential, badge, icon, action }: DeviceCardProps) {
+function DeviceCard({ name, battery, status, badge, icon, action }: DeviceCardProps) {
   const isConnected = status === 'connected';
+  const daysLeft = battery ? battery / 15 : undefined;
+  const contribution = isConnected ? `+${Math.floor(Math.random() * 20 + 5)} points` : undefined;
+  const potential = !isConnected ? `+${Math.floor(Math.random() * 20 + 10)} points` : undefined;
+
+
   return (
     <Card className="p-4 bg-card overflow-hidden relative">
       <div className="flex gap-4">
@@ -43,7 +46,7 @@ function DeviceCard({ name, battery, daysLeft, status, contribution, potential, 
                 <Wifi size={14} className="text-success" />
                 <span>{battery}%</span>
               </div>
-              <span>{daysLeft?.toFixed(1)} days left</span>
+              {daysLeft && <span>{daysLeft?.toFixed(1)} days left</span>}
             </div>
           ) : (
             <div className="flex items-center gap-1 text-sm text-muted-foreground">
@@ -66,18 +69,6 @@ function DeviceCard({ name, battery, daysLeft, status, contribution, potential, 
   );
 }
 
-function InsightCard({ children }: { children: React.ReactNode }) {
-  return (
-    <Card className="p-4 bg-gradient-to-r from-primary/20 to-accent/20">
-      <div className="flex items-start gap-3">
-        <div className="text-primary">
-          <BrainCircuit size={20} />
-        </div>
-        <div>{children}</div>
-      </div>
-    </Card>
-  );
-}
 
 export default function DevicesTab() {
   const { devices, mockData } = useContext(AppContext);
@@ -89,20 +80,17 @@ export default function DevicesTab() {
 
   return (
     <div className="space-y-6">
-      <Card className="bg-card rounded-xl p-6 text-center">
-        <h2 className="text-2xl font-semibold mb-4">🔮 Ecosystem Intelligence</h2>
-        <div className="relative inline-block">
-          <CircularProgress size={100} value={mockData.ecosystemScore} color="success" />
-          <div className="absolute inset-0 flex flex-col items-center justify-center">
-            <div className="text-2xl font-bold">
-              {mockData.ecosystemScore}
-              <span className="text-lg">/100</span>
-            </div>
-          </div>
-        </div>
-        <div className="text-center mt-4">
-          <div className="text-lg font-bold text-success">EXCELLENT</div>
-          <div className="text-sm text-muted-foreground">Multi-device harmony</div>
+      <h2 className="text-2xl font-bold">My Devices</h2>
+
+      <Card className="bg-gradient-to-br from-primary to-accent rounded-xl p-6 mb-6">
+        <h3 className="text-xl font-semibold mb-4 flex items-center text-primary-foreground">
+          <Zap className="w-5 h-5 mr-2" />
+          Ecosystem Intelligence
+        </h3>
+        <div className="text-center text-primary-foreground">
+          <div className="text-4xl font-bold mb-2">{mockData.ecosystemScore}/100</div>
+          <div className="font-semibold mb-1 text-success">EXCELLENT</div>
+          <div className="text-sm text-primary-foreground/80">Multi-device harmony</div>
         </div>
       </Card>
 
@@ -112,21 +100,13 @@ export default function DevicesTab() {
             key={device.id}
             name={device.name}
             battery={device.battery}
-            daysLeft={device.battery ? device.battery / 15 : undefined}
             status={device.connected ? 'connected' : 'disconnected'}
-            contribution={device.connected ? `+${device.intelligence} points` : undefined}
-            potential={!device.connected ? `+${device.potential} points` : undefined}
             icon={deviceIcons[device.type]}
             badge={device.name.includes('Luna') ? 'NEW!' : undefined}
             action={!device.connected ? 'Connect for Audio Health' : undefined}
           />
         ))}
       </div>
-
-      <InsightCard>
-        <div className="text-sm text-primary font-semibold mb-2">Device Synergy</div>
-        <div className="text-base font-medium">Ring detected deep sleep + Watch shows perfect recovery = Expect 18% better focus today</div>
-      </InsightCard>
     </div>
   );
 }

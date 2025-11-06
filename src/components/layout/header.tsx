@@ -2,10 +2,10 @@
 
 import { useContext } from 'react';
 import { AppContext } from '@/context/app-context';
-import { User, Search, Bell } from 'lucide-react';
+import { User, Bell, Building2 } from 'lucide-react';
 
 export default function Header() {
-  const { user, setUser } = useContext(AppContext);
+  const { accountType, setAccountType } = useContext(AppContext);
 
   return (
     <header className="app-header">
@@ -27,15 +27,26 @@ export default function Header() {
           </div>
 
           <div className="flex items-center space-x-3">
-            <button className="p-2 hover:bg-white/5 rounded-full transition-colors">
-              <Search className="w-5 h-5 text-gray-400" />
+            <button
+              onClick={() => setAccountType(accountType === 'individual' ? 'enterprise' : 'individual')}
+              className="text-xs bg-primary hover:bg-primary/80 px-3 py-1.5 rounded-full transition-colors flex items-center space-x-1"
+            >
+              {accountType === 'individual' ? (
+                <>
+                  <User className="w-3 h-3" />
+                  <span>Personal</span>
+                </>
+              ) : (
+                <>
+                  <Building2 className="w-3 h-3" />
+                  <span>Enterprise</span>
+                </>
+              )}
             </button>
-            
             <button className="p-2 hover:bg-white/5 rounded-full transition-colors relative">
               <Bell className="w-5 h-5 text-gray-400" />
               <div className="absolute top-1.5 right-1.5 w-2 h-2 bg-primary rounded-full"></div>
             </button>
-            
             <button className="w-8 h-8 bg-gradient-to-br from-primary to-accent rounded-full flex items-center justify-center">
               <User className="w-4 h-4 text-white" />
             </button>
